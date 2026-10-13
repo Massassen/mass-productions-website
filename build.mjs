@@ -440,22 +440,6 @@ function gamePage(g) {
 	return page({ file: `${g.slug}.html`, title: g.title, description: g.about[0], image: asset(g.cover), body, structuredData });
 }
 
-// The old update notes page now just sends people to the updates list on the homepage.
-function updatesRedirectPage() {
-	return `<!doctype html>
-<html lang="en">
-<head>
-	<meta charset="utf-8">
-	<title>Updates</title>
-	<meta http-equiv="refresh" content="0; url=index.html#updates">
-</head>
-<body>
-<p><a href="index.html#updates">The updates have moved to the homepage.</a></p>
-</body>
-</html>
-`;
-}
-
 // Shown by most hosts at any broken address.
 function notFoundPage() {
 	const body = `
@@ -505,7 +489,6 @@ copyFolder(DESIGN, path.join(PUBLIC, 'assets'), ['fonts']);
 const write = (name, text) => fs.writeFileSync(path.join(PUBLIC, name), text);
 write('index.html', homePage());
 write(`${mainGame.slug}.html`, gamePage(mainGame));
-if (feedItems.length) write('updates.html', updatesRedirectPage());
 write('404.html', notFoundPage());
 if (studio.url) {
 	const pages = ['', `${mainGame.slug}.html`];
