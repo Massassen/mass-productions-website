@@ -268,3 +268,28 @@
 		} catch (e) {}
 	});
 })();
+
+// Hover wobbles are paused animations that run while something is hovered (see styles.css), so each thing keeps its last look.
+// On its own that means the first change can take a moment, depending on where the animation was paused.
+// This skips each one ahead to its next change the instant the mouse arrives, so hovering always reacts straight away.
+(function () {
+	var ROOTS = 'a, button, .hero-media';
+	function skipToNextChange(root) {
+		if (!root.getAnimations) return;
+		root.getAnimations({ subtree: true }).forEach(function (animation) {
+			if (animation.playState !== 'running' || !animation.effect) return;
+			var timing = animation.effect.getComputedTiming();
+			if (timing.iterations !== Infinity || timing.progress == null || !timing.duration) return;
+			// every wobble has two looks and changes at the start and the middle of its loop
+			var untilChange = (timing.progress < 0.5 ? 0.5 - timing.progress : 1 - timing.progress) * timing.duration;
+			animation.currentTime = animation.currentTime + untilChange + 1;
+		});
+	}
+	document.addEventListener('mouseover', function (event) {
+		var from = event.relatedTarget;
+		for (var el = event.target; el && el.nodeType === 1; el = el.parentElement) {
+			// only the things the mouse has just entered, not ones it was already inside
+			if (el.matches(ROOTS) && !(from && el.contains(from))) skipToNextChange(el);
+		}
+	});
+})();

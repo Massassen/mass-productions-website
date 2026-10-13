@@ -198,7 +198,8 @@ p { margin: 0; }
 	-webkit-mask: var(--rule-down) center top / 6px 240px repeat-y; mask: var(--rule-down) center top / 6px 240px repeat-y;
 }
 /* Hovering anywhere on the card wiggles its "see more" underline, so it's clear the whole card is the link. */
-.card:hover .text-link::after { animation: pen-flip .3s steps(1, end) infinite; }
+.card .text-link::after { animation: pen-flip .3s steps(1, end) infinite paused; }
+.card:hover .text-link::after { animation-play-state: running; }
 @media (max-width: 720px) {
 	.feature-card .card-inner { grid-template-columns: minmax(0, 1fr); }
 	.feature-card img { height: auto; min-height: 0; }
@@ -292,8 +293,10 @@ p { margin: 0; }
 .download-icon .dl-b { opacity: 0; }
 @keyframes dl-flip-a { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
 @keyframes dl-flip-b { 0% { opacity: 0; } 50%, 100% { opacity: 1; } }
-.footer-download:hover .dl-a { animation: dl-flip-a .3s steps(1, end) infinite; }
-.footer-download:hover .dl-b { animation: dl-flip-b .3s steps(1, end) infinite; }
+.footer-download .dl-a { animation: dl-flip-a .3s steps(1, end) infinite paused; }
+.footer-download:hover .dl-a { animation-play-state: running; }
+.footer-download .dl-b { animation: dl-flip-b .3s steps(1, end) infinite paused; }
+.footer-download:hover .dl-b { animation-play-state: running; }
 .footer-bottom {
 	display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
 	padding-top: 16px; border-top: 1px solid transparent; font-size: 19px;
@@ -317,7 +320,8 @@ p { margin: 0; }
 	0% { -webkit-mask-image: var(--pen-a); mask-image: var(--pen-a); }
 	50%, 100% { -webkit-mask-image: var(--pen-b); mask-image: var(--pen-b); }
 }
-.nav a:hover::after, .text-link:hover::after, .footer-links a:hover::after, .footer-bottom a:hover::after { animation: pen-flip .3s steps(1, end) infinite; }
+.nav a::after, .text-link::after, .footer-links a::after, .footer-bottom a::after { animation: pen-flip .3s steps(1, end) infinite paused; }
+.nav a:hover::after, .text-link:hover::after, .footer-links a:hover::after, .footer-bottom a:hover::after { animation-play-state: running; }
 
 /* ---------- Pen dividers: a hand-drawn line in place of the straight borders between sections ---------- */
 :root {
@@ -495,8 +499,19 @@ p { margin: 0; }
 	0% { -webkit-mask-image: var(--frame-icon-1-line); mask-image: var(--frame-icon-1-line); }
 	50%, 100% { -webkit-mask-image: var(--frame-icon-2-line); mask-image: var(--frame-icon-2-line); }
 }
-.theme-button:hover::before { animation: icon-flip-fill .3s steps(1, end) infinite; }
-.theme-button:hover::after { animation: icon-flip-line .3s steps(1, end) infinite; }
+.theme-button::before { animation: icon-flip-fill .3s steps(1, end) infinite paused; }
+.theme-button:hover::before { animation-play-state: running; }
+.theme-button::after { animation: icon-flip-line .3s steps(1, end) infinite paused; }
+.theme-button:hover::after { animation-play-state: running; }
+/* The sun and moon wobble with it: each is drawn twice, slightly differently, and the two drawings swap on the same beat. */
+/* The swap uses visibility, not opacity: fading makes the browser redraw the icon as a soft, blurry picture while it animates. */
+.theme-button .icon-b { visibility: hidden; }
+@keyframes icon-swap-a { 0% { visibility: visible; } 50%, 100% { visibility: hidden; } }
+@keyframes icon-swap-b { 0% { visibility: hidden; } 50%, 100% { visibility: visible; } }
+.theme-button .icon-a { animation: icon-swap-a .3s steps(1, end) infinite paused; }
+.theme-button:hover .icon-a { animation-play-state: running; }
+.theme-button .icon-b { animation: icon-swap-b .3s steps(1, end) infinite paused; }
+.theme-button:hover .icon-b { animation-play-state: running; }
 
 /* ---------- Hover wobble: clickable frames swap between two drawings while hovered, like the theme button ---------- */
 /* Only things you can click wobble (buttons, game cards, screenshots, the video's pause button), so the wobble also says "you can click this". */
@@ -520,17 +535,23 @@ p { margin: 0; }
 @media (max-width: 720px) {
 	.card.feature-card { --frame-fill-b: var(--frame-feature-tall-2-fill); --frame-line-b: var(--frame-feature-tall-2-line); }
 }
+/* The homepage video wobbles too: its shape, outline and shadow all swap together. */
+.hero-media { --frame-fill-b: var(--frame-wide-1-fill); --frame-line-b: var(--frame-wide-1-line); }
 .screenshot { --frame-fill-b: var(--frame-wide-2-fill); --frame-line-b: var(--frame-wide-2-line); }
 .screenshot:nth-child(4n+2) { --frame-fill-b: var(--frame-wide-3-fill); --frame-line-b: var(--frame-wide-3-line); }
 .screenshot:nth-child(4n+3) { --frame-fill-b: var(--frame-wide-4-fill); --frame-line-b: var(--frame-wide-4-line); }
 .screenshot:nth-child(4n) { --frame-fill-b: var(--frame-wide-1-fill); --frame-line-b: var(--frame-wide-1-line); }
-.button:hover::before, .button:hover .button-shadow, .video-toggle:hover::before, .card:hover::before, .card:hover .card-inner, .screenshot:hover img { animation: frame-flip-fill .3s steps(1, end) infinite; }
-.button:hover::after, .video-toggle:hover::after, .card:hover::after, .screenshot:hover::after { animation: frame-flip-line .3s steps(1, end) infinite; }
+.button::before, .button .button-shadow, .video-toggle::before, .card::before, .card .card-inner, .screenshot img, .hero-media .media, .hero-media::before { animation: frame-flip-fill .3s steps(1, end) infinite paused; }
+.button:hover::before, .button:hover .button-shadow, .video-toggle:hover::before, .card:hover::before, .card:hover .card-inner, .screenshot:hover img, .hero-media:hover .media, .hero-media:hover::before { animation-play-state: running; }
+.button::after, .video-toggle::after, .card::after, .screenshot::after, .hero-media::after { animation: frame-flip-line .3s steps(1, end) infinite paused; }
+.button:hover::after, .video-toggle:hover::after, .card:hover::after, .screenshot:hover::after, .hero-media:hover::after { animation-play-state: running; }
 /* Labels wobble along with the card or update row they sit in. */
-.card:hover .tag::before, .feed-row:hover .tag::before { animation: frame-flip-fill .3s steps(1, end) infinite; }
-.card:hover .tag::after, .feed-row:hover .tag::after { animation: frame-flip-line .3s steps(1, end) infinite; }
+.card .tag::before, .feed-row .tag::before { animation: frame-flip-fill .3s steps(1, end) infinite paused; }
+.card:hover .tag::before, .feed-row:hover .tag::before { animation-play-state: running; }
+.card .tag::after, .feed-row .tag::after { animation: frame-flip-line .3s steps(1, end) infinite paused; }
+.card:hover .tag::after, .feed-row:hover .tag::after { animation-play-state: running; }
 @media (prefers-reduced-motion: reduce) {
-	.button:hover::before, .button:hover::after, .button:hover .button-shadow, .video-toggle:hover::before, .video-toggle:hover::after, .card:hover::before, .card:hover::after, .card:hover .card-inner, .screenshot:hover img, .screenshot:hover::after, .card:hover .tag::before, .card:hover .tag::after, .feed-row:hover .tag::before, .feed-row:hover .tag::after { animation: none !important; }
+	.button:hover::before, .button:hover::after, .button:hover .button-shadow, .video-toggle:hover::before, .video-toggle:hover::after, .card:hover::before, .card:hover::after, .card:hover .card-inner, .screenshot:hover img, .screenshot:hover::after, .hero-media:hover .media, .hero-media:hover::before, .hero-media:hover::after, .card:hover .tag::before, .card:hover .tag::after, .feed-row:hover .tag::before, .feed-row:hover .tag::after { animation: none !important; }
 }
 
 /* ---------- Updates lists: rows that open and "show more" ---------- */
@@ -538,8 +559,10 @@ p { margin: 0; }
 /* When Show more or the page buttons line the list up under the header, leave a little room above the heading. */
 .feed { scroll-margin-top: calc(var(--header-height, 72px) - 52px); }
 .feed-row { width: 100%; border: 0; background: none; font: inherit; text-align: left; cursor: pointer; }
-.feed-row:hover .bold { animation: flip-to-regular .3s steps(1, end) infinite; }
-.feed-row:hover span:not(.bold) { animation: flip-to-bold .3s steps(1, end) infinite; }
+.feed-row .bold { animation: flip-to-regular .3s steps(1, end) -.29s infinite paused; }
+.feed-row:hover .bold { animation-play-state: running; }
+.feed-row span:not(.bold) { animation: flip-to-bold .3s steps(1, end) -.29s infinite paused; }
+.feed-row:hover span:not(.bold) { animation-play-state: running; }
 /* A small label in front of each title saying what the row is: tan for a game, white for anything else. */
 .feed-title-line { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
 .feed-tag { --box-line: var(--line); color: var(--ink); }
@@ -556,7 +579,8 @@ p { margin: 0; }
 .feed-more { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; }
 .feed-more[hidden] { display: none; }
 .feed-more button { border: 0; background: none; font-family: "Hand Bold", "Hand", system-ui, sans-serif; color: var(--ink); cursor: pointer; }
-.feed-more button:hover:not(:disabled) { color: var(--muted); animation: flip-to-regular .3s steps(1, end) infinite; }
+.feed-more button:not(:disabled) { animation: flip-to-regular .3s steps(1, end) -.29s infinite paused; }
+.feed-more button:hover:not(:disabled) { color: var(--muted); animation-play-state: running; }
 .feed-more button:disabled { opacity: .35; cursor: default; }
 .feed-more button:disabled::after { animation: none; }
 .feed-pager { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
@@ -571,6 +595,9 @@ p { margin: 0; }
 	.feed-row .update-arrow { transition: none; }
 }
 
+/* How every hover wobble on this page works: the animation is always there but paused, and hovering lets it run.
+   So when the mouse leaves, a thing keeps whichever of its two looks it was showing instead of snapping back. */
+
 /* ---------- Hover font flip: links swap to the other hand font every 0.15s ---------- */
 @keyframes flip-to-regular {
 	0% { font-family: "Hand", system-ui, sans-serif; }
@@ -580,11 +607,13 @@ p { margin: 0; }
 	0% { font-family: "Hand Bold", "Hand", system-ui, sans-serif; }
 	50%, 100% { font-family: "Hand", system-ui, sans-serif; }
 }
-a.bold:hover, a:hover .bold { animation: flip-to-regular .3s steps(1, end) infinite; }
-a:not(.bold):hover, a:hover span:not(.bold) { animation: flip-to-bold .3s steps(1, end) infinite; }
+a.bold, a .bold { animation: flip-to-regular .3s steps(1, end) -.29s infinite paused; }
+a.bold:hover, a:hover .bold { animation-play-state: running; }
+a:not(.bold), a span:not(.bold) { animation: flip-to-bold .3s steps(1, end) -.29s infinite paused; }
+a:not(.bold):hover, a:hover span:not(.bold) { animation-play-state: running; }
 
 @media (prefers-reduced-motion: reduce) {
-	a:hover, a:hover *, a:hover::after, .theme-button:hover::before, .theme-button:hover::after { animation: none !important; }
+	a:hover, a:hover *, a:hover::after, .theme-button:hover::before, .theme-button:hover::after, .theme-button:hover svg * { animation: none !important; }
 	.button, .button-shadow, .card, .card::before, .screenshot { transition: none; }
 }
 
