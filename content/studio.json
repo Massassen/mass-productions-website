@@ -1,0 +1,14 @@
+{
+	"name": "Mass Productions",
+	"url": "",
+	"description": "Mass Productions makes games in Godot. Home of Purrspective, a hand-drawn game about a masked cat who can change the size of anything.",
+	"email": "massproductions.game@gmail.com",
+	"discord": "https://discord.gg/FUp6bsaqd",
+	"pressKit": "press-kit/purrspective-press-kit.zip",
+	"links": [
+		{ "label": "Steam", "url": "https://store.steampowered.com/app/4005790/Purrspective/" },
+		{ "label": "itch.io", "url": "https://massproductionstudio.itch.io/" },
+		{ "label": "YouTube", "url": "https://www.youtube.com/@MassProductionStudio" },
+		{ "label": "Discord", "url": "https://discord.gg/FUp6bsaqd" }
+	]
+}

@@ -1,0 +1,6 @@
+# The finished website. Rebuilt from scratch by build.mjs, so it is not saved in the repo.
+public/
+
+# Files Windows and macOS scatter around.
+Thumbs.db
+.DS_Store

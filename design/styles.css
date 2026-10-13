@@ -1,0 +1,604 @@
+/* Mass Productions website styles */
+
+/* ---------- Fonts ---------- */
+/* Both fonts share the same line metrics, so text doesn't jump when the hover flip swaps them. */
+@font-face {
+	font-family: "Hand Bold";
+	src: url("fonts/hand-bold.woff2") format("woff2");
+	font-display: swap;
+	ascent-override: 100%;
+	descent-override: 25%;
+	line-gap-override: 0%;
+}
+@font-face {
+	font-family: "Hand";
+	src: url("fonts/hand-regular.woff2") format("woff2");
+	font-display: swap;
+	ascent-override: 100%;
+	descent-override: 25%;
+	line-gap-override: 0%;
+}
+
+/* ---------- Colours (from the Mass Productions palette) ---------- */
+:root {
+	--bg: #F1F6F0;
+	--ink: #2A1721;
+	--muted: #4D2B32;
+	--line: #2A1721;
+	--shadow: #2A1721;
+	--surface: #FFFFFF;
+	--band: #F1D3A8;
+	--media: #C3CCC9;
+	--footer: #2A1721;
+	--footer-ink: #F1F6F0;
+	--accent: #E97D45;
+	--on-accent: #2A1721;
+	--jam: #A2EFD2;
+	color-scheme: light;
+}
+:root[data-theme="dark"] {
+	--bg: #151D28;
+	--ink: #F1F6F0;
+	--muted: #A6B5B1;
+	--line: #557074;
+	--shadow: #111522;
+	--surface: #202E37;
+	--band: #142F3E;
+	--media: #394A50;
+	--footer: #111522;
+	--footer-ink: #F1F6F0;
+	color-scheme: dark;
+}
+
+/* ---------- Base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+html { scroll-padding-top: 76px; }
+/* Jumping to Games or Updates (and opening "Show more") stops with the section's heading 24px under the header line, the same every time.
+   The 72px is the space above the heading inside a section; scripts.js measures --header-height. */
+#games, #updates { scroll-margin-top: calc(var(--header-height, 72px) - 124px); }
+/* Short pages (like the 404 page) still fill the screen, so the footer starts just below it and only shows when you scroll. 60px is the header. */
+main { min-height: calc(100vh - 60px); min-height: calc(100dvh - 60px); }
+@media (prefers-reduced-motion: no-preference) {
+	html { scroll-behavior: smooth; }
+}
+body {
+	margin: 0;
+	background: var(--bg);
+	color: var(--ink);
+	font-family: "Hand", "Comic Neue", "Trebuchet MS", system-ui, sans-serif;
+	font-size: 20px;
+	line-height: 1.5;
+}
+img, video { display: block; max-width: 100%; }
+a { color: var(--ink); text-underline-offset: 5px; }
+a:hover { color: var(--muted); }
+h1, h2, h3 { font-family: "Hand Bold", "Hand", system-ui, sans-serif; font-weight: 400; margin: 0; line-height: 1.05; }
+p { margin: 0; }
+.bold { font-family: "Hand Bold", "Hand", system-ui, sans-serif; }
+.muted { color: var(--muted); }
+.sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.wrap { max-width: 1160px; margin: 0 auto; padding-inline: 20px; }
+.skip-link {
+	position: absolute; left: -9999px; top: 8px; z-index: 50;
+	background: var(--surface); padding: 8px 14px; border: 2px solid var(--line); border-radius: 10px;
+}
+.skip-link:focus { left: 8px; }
+:focus-visible { outline: 3px solid var(--accent); outline-offset: 3px; }
+
+/* ---------- Header ---------- */
+.site-header {
+	position: sticky; top: 0; z-index: 10;
+	background: var(--bg);
+	border-bottom: 2px solid transparent;
+}
+.site-header .wrap {
+	display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
+	gap: 8px 24px; padding-block: 10px;
+}
+.logo { font-size: 26px; text-decoration: none; }
+.header-right { display: flex; align-items: center; gap: 16px 20px; }
+.nav { display: flex; gap: 24px; font-size: 20px; }
+.nav a { text-decoration: none; padding-block: 10px; }
+.theme-button {
+	width: 44px; height: 44px; padding: 0;
+	display: inline-flex; align-items: center; justify-content: center;
+	background: var(--surface); color: var(--ink);
+	border: 2px solid var(--line); border-radius: 12px; cursor: pointer;
+}
+.theme-button .sun { display: none; }
+:root[data-theme="dark"] .theme-button .sun { display: block; }
+:root[data-theme="dark"] .theme-button .moon { display: none; }
+
+/* ---------- Buttons and links ---------- */
+.button {
+	display: inline-flex; align-items: center; min-height: 56px; padding: 0 28px;
+	background: var(--accent); color: var(--on-accent);
+	border: 2px solid var(--shadow); border-radius: 12px;
+	box-shadow: 4px 4px 0 var(--shadow);
+	font-size: 23px; text-decoration: none;
+	transition: transform .12s, box-shadow .12s;
+}
+.button:hover { color: var(--on-accent); }
+.button.plain { background: var(--surface); color: var(--ink); border-color: var(--line); }
+.button:hover, .card:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0 var(--shadow); }
+.text-link { align-self: flex-start; font-size: 20px; text-decoration-thickness: 2px; padding-block: 10px; }
+.actions { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 24px; padding-top: 6px; }
+
+/* ---------- Homepage hero ---------- */
+.hero { background: var(--band); border-bottom: 2px solid transparent; }
+.hero .wrap {
+	display: flex; flex-wrap: wrap; align-items: center; gap: 36px 48px;
+	padding-block: 48px 56px;
+}
+.hero-text { flex: 1 1 420px; min-width: 0; display: flex; flex-direction: column; gap: 18px; }
+.hero-label { font-size: 18px; color: var(--muted); }
+.hero h1 { font-size: clamp(46px, 5.2vw, 76px); line-height: 1; white-space: nowrap; }
+.title-link { color: inherit; text-decoration: none; }
+.title-link:hover { color: inherit; }
+.hero-tagline { font-size: 23px; max-width: 30ch; text-wrap: pretty; }
+.wishlist-note { font-size: 16px; color: var(--muted); margin-top: -6px; }
+.hero-media { position: relative; flex: 1.3 1 520px; min-width: 0; margin: 0; }
+/* Wishlist and playtest sit side by side; the trailer link goes on the line below. */
+.hero .actions { column-gap: 14px; }
+.hero .actions .button { padding: 0 20px; font-size: 21px; }
+.media {
+	width: 100%; aspect-ratio: 16 / 9; object-fit: cover;
+	background: var(--media);
+}
+.video-toggle {
+	position: absolute; right: 14px; bottom: 14px;
+	width: 44px; height: 44px; padding: 0;
+	display: inline-flex; align-items: center; justify-content: center;
+	background: var(--surface); color: var(--ink);
+	border: 2px solid var(--line); border-radius: 12px; cursor: pointer;
+	opacity: .85; transition: opacity .12s;
+}
+.video-toggle:hover, .video-toggle:focus-visible { opacity: 1; }
+.video-toggle .icon-play { display: none; }
+.video-toggle.paused .icon-play { display: block; }
+.video-toggle.paused .icon-pause { display: none; }
+/* Clicking the gameplay video pauses it and clicking again plays it. While it's paused, a small play sign shows in the corner so people know it can be started again. */
+.hero-media .media[role="button"] { cursor: pointer; }
+.video-paused-badge { pointer-events: none; opacity: 1; }
+.hero-media:not(.is-paused) .video-paused-badge { display: none; }
+.hero-media .media:focus-visible { outline: none; }
+.hero-media:has(.media:focus-visible) { outline: 3px solid var(--accent); outline-offset: 6px; border-radius: 14px; }
+
+/* ---------- Homepage sections ---------- */
+.section { padding-block: 72px 24px; display: flex; flex-direction: column; gap: 28px; }
+.section:last-of-type { padding-bottom: 88px; }
+.section h2 { font-size: 46px; }
+
+/* ---------- Game jam cards ---------- */
+.card-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(240px, 100%), 1fr)); gap: 24px; }
+.card {
+	position: relative; isolation: isolate; display: flex; flex-direction: column; text-decoration: none;
+	color: var(--ink);
+	transition: transform .12s;
+}
+.card:hover { color: var(--ink); }
+.card img { width: 100%; height: auto; aspect-ratio: 460 / 215; object-fit: cover; background: var(--media); }
+.card-body { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start; }
+.card-title { font-size: 26px; line-height: 1.1; }
+.card-text { font-size: 17px; color: var(--muted); }
+/* The big Purrspective card at the top of the Games section: picture on the left, text on the right. The whole card is one link. */
+.feature-card .card-inner { display: grid; grid-template-columns: minmax(0, 1.25fr) minmax(0, 1fr); }
+/* Its height follows the screen height, so after pressing Games the whole Games section (this card and the jam cards) fits on one screen, with the same 24px gap below as above. 506px is everything else. */
+@media (min-width: 721px) {
+	.feature-card .card-inner { flex: none; height: clamp(270px, 100vh - var(--header-height, 72px) - 506px, 380px); height: clamp(270px, 100svh - var(--header-height, 72px) - 506px, 380px); }
+}
+.feature-card img { height: 100%; min-height: 100%; object-fit: cover; aspect-ratio: 640 / 299; }
+.feature-card .card-body { justify-content: center; padding: 28px 36px 30px; gap: 10px; }
+.feature-card .card-title { font-size: clamp(40px, 4.6vw, 60px); line-height: 1; }
+.feature-card .card-text { font-size: 18px; }
+.feature-card .text-link { padding-block: 6px 10px; }
+/* The wobbly line between picture and text runs down the side here (and along the top once the card stacks). */
+.feature-card .card-body::before {
+	top: 0; bottom: 0; left: -3px; right: auto; width: 6px; height: auto;
+	-webkit-mask: var(--rule-down) center top / 6px 240px repeat-y; mask: var(--rule-down) center top / 6px 240px repeat-y;
+}
+/* Hovering anywhere on the card wiggles its "see more" underline, so it's clear the whole card is the link. */
+.card:hover .text-link::after { animation: pen-flip .3s steps(1, end) infinite; }
+@media (max-width: 720px) {
+	.feature-card .card-inner { grid-template-columns: minmax(0, 1fr); }
+	.feature-card img { height: auto; min-height: 0; }
+	.feature-card .card-body { padding: 16px 18px 20px; }
+	.feature-card .card-body::before {
+		top: -3px; bottom: auto; left: 0; right: 0; width: auto; height: 6px;
+		-webkit-mask: var(--rule) left center / 240px 6px repeat-x; mask: var(--rule) left center / 240px 6px repeat-x;
+	}
+}
+.tag {
+	font-size: 15px; padding: 2px 10px;
+	border: 2px solid var(--shadow); border-radius: 999px;
+	background: var(--jam); color: #2A1721;
+}
+
+/* ---------- Inner pages (game page, update notes, 404) ---------- */
+.page { max-width: 920px; margin: 0 auto; padding: 28px 20px 80px; display: flex; flex-direction: column; gap: 32px; }
+.page h2 { font-size: 36px; }
+.page-title { font-size: clamp(40px, 5.5vw, 60px); }
+.title-row { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 20px; }
+.title-row > div { display: flex; flex-direction: column; gap: 10px; align-items: flex-start; min-width: 0; }
+/* The Wishlist and playtest buttons next to the title sit side by side. */
+.title-row > .actions { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 14px; padding-top: 0; }
+.title-row h1 { font-size: clamp(40px, 5.5vw, 68px); line-height: 1; }
+.page-details { font-size: 19px; color: var(--muted); }
+.block { display: flex; flex-direction: column; gap: 12px; }
+.lead { font-size: 22px; max-width: 60ch; text-wrap: pretty; }
+.feature-list { margin: 0; padding-left: 22px; display: flex; flex-direction: column; gap: 4px; }
+.cta-box {
+	display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 20px;
+	padding: 28px; background: var(--band); border: 2px solid var(--line); border-radius: 16px;
+}
+.cta-box .big { font-size: 30px; line-height: 1.15; }
+
+/* ---------- Screenshots + full-size viewer ---------- */
+.screenshots { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(380px, 100%), 1fr)); gap: 16px; }
+.screenshot { position: relative; display: block; border-radius: 10px; cursor: zoom-in; transition: transform .12s; }
+.screenshot:hover { transform: translateY(-2px); }
+.screenshot img { width: 100%; height: auto; aspect-ratio: 16 / 9; object-fit: cover; }
+.lightbox {
+	border: 0; padding: 0; background: transparent; color: #F1F6F0;
+	width: 100vw; height: 100vh; max-width: 100vw; max-height: 100vh;
+}
+.lightbox::backdrop { background: rgba(17, 21, 34, .92); }
+.lightbox-inner { position: relative; width: 100%; height: 100%; display: flex; align-items: center; justify-content: center; padding: 64px 72px; }
+.lightbox img { max-width: 100%; max-height: 100%; border: 2px solid #557074; border-radius: 10px; }
+.lightbox button {
+	position: absolute; width: 48px; height: 48px; padding: 0;
+	display: inline-flex; align-items: center; justify-content: center;
+	background: #202E37; color: #F1F6F0; border: 2px solid #557074; border-radius: 12px; cursor: pointer; font-size: 22px;
+}
+.lightbox .close { top: 12px; right: 12px; }
+.lightbox .previous { left: 12px; top: 50%; transform: translateY(-50%); }
+.lightbox .next { right: 12px; top: 50%; transform: translateY(-50%); }
+.lightbox .counter { position: absolute; bottom: 16px; left: 0; right: 0; text-align: center; font-size: 17px; }
+
+/* ---------- Update rows (the lists on the homepage and the game page) ---------- */
+.update-rows { list-style: none; margin: 0; padding: 0; border-top: 2px solid transparent; }
+.update-rows > li { border-bottom: 1px solid transparent; }
+.update-row {
+	display: grid; grid-template-columns: 9em minmax(0, 1fr) auto; align-items: baseline;
+	gap: 4px 20px; padding: 14px 10px; text-decoration: none; color: var(--ink);
+}
+.update-date { font-size: 17px; color: var(--muted); white-space: nowrap; }
+.update-text { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.update-title { font-size: 22px; line-height: 1.2; }
+.update-summary { font-size: 17px; color: var(--muted); }
+.update-arrow { font-size: 20px; }
+
+/* ---------- What is inside an update: the list of changes ---------- */
+.update-changes { padding-top: 10px; max-width: 66ch; }
+.change-list { margin: 0; padding-left: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; }
+.change-list li { display: flex; gap: 10px; }
+.change-mark { flex: none; width: 1ch; text-align: center; font-weight: bold; color: var(--muted); }
+.change-list em { color: var(--muted); font-size: .85em; font-style: normal; }
+.change-list li.removed { color: var(--muted); }
+.change-detail { display: block; font-size: .85em; color: var(--muted); }
+
+/* ---------- Footer ---------- */
+.site-footer { background: var(--footer); color: var(--footer-ink); }
+.site-footer a, .site-footer a:hover { color: var(--footer-ink); }
+.site-footer .wrap { padding-block: 36px 40px; display: flex; flex-direction: column; gap: 20px; }
+.footer-top { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 16px 32px; }
+.footer-name { font-size: 24px; }
+.footer-links { display: flex; flex-wrap: wrap; gap: 4px 24px; font-size: 19px; }
+.footer-links a, .footer-bottom a { padding-block: 10px; text-underline-offset: 4px; }
+.footer-download { display: inline-flex; align-items: center; gap: 8px; }
+/* The download arrow is drawn twice; the second drawing sits on top of the first and they take turns while the link is hovered. */
+.download-icon { display: inline-grid; }
+.download-icon svg { grid-area: 1 / 1; }
+.download-icon .dl-b { opacity: 0; }
+@keyframes dl-flip-a { 0% { opacity: 1; } 50%, 100% { opacity: 0; } }
+@keyframes dl-flip-b { 0% { opacity: 0; } 50%, 100% { opacity: 1; } }
+.footer-download:hover .dl-a { animation: dl-flip-a .3s steps(1, end) infinite; }
+.footer-download:hover .dl-b { animation: dl-flip-b .3s steps(1, end) infinite; }
+.footer-bottom {
+	display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px 24px;
+	padding-top: 16px; border-top: 1px solid transparent; font-size: 19px;
+}
+
+/* ---------- Pen underlines: a hand-drawn stroke under links, in place of the browser underline ---------- */
+:root {
+	--pen-a: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1.5 4.64 C14 3.2 24 5.44 38 4.32 C52 3.2 60 4.96 74 4.16 C84 3.52 91 4.48 98.5 3.84' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--pen-b: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 8' preserveAspectRatio='none'%3E%3Cpath d='M1.5 3.68 C13 4.96 25 3.04 40 4.16 C55 5.28 63 3.36 76 4.32 C85 4.96 92 4 98.5 4.64' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.nav a, .text-link, .footer-links a, .footer-bottom a { position: relative; text-decoration: none; }
+.nav a::after, .text-link::after, .footer-links a::after, .footer-bottom a::after {
+	content: ""; position: absolute; left: -2px; right: -2px; bottom: var(--pen-bottom, 7px); height: 8px;
+	background: currentColor; pointer-events: none;
+	-webkit-mask: var(--pen-a) center / 100% 100% no-repeat; mask: var(--pen-a) center / 100% 100% no-repeat;
+}
+.nav a::after { opacity: 0; }
+.nav a:hover::after, .nav a[aria-current="page"]::after { opacity: 1; }
+.nav a[aria-current="page"]::after { background: var(--accent); }
+@keyframes pen-flip {
+	0% { -webkit-mask-image: var(--pen-a); mask-image: var(--pen-a); }
+	50%, 100% { -webkit-mask-image: var(--pen-b); mask-image: var(--pen-b); }
+}
+.nav a:hover::after, .text-link:hover::after, .footer-links a:hover::after, .footer-bottom a:hover::after { animation: pen-flip .3s steps(1, end) infinite; }
+
+/* ---------- Pen dividers: a hand-drawn line in place of the straight borders between sections ---------- */
+:root {
+	--rule: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='6'%3E%3Cpath d='M0 3 C20 1.8 40 4.2 62 3.1 C84 2 100 4.3 124 3.2 C146 2.2 160 4.1 182 2.9 C204 1.7 220 4.2 240 3' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+	--rule-thin: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='6'%3E%3Cpath d='M0 3 C20 1.8 40 4.2 62 3.1 C84 2 100 4.3 124 3.2 C146 2.2 160 4.1 182 2.9 C204 1.7 220 4.2 240 3' fill='none' stroke='black' stroke-width='1.4'/%3E%3C/svg%3E");
+	--rule-down: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='6' height='240'%3E%3Cpath d='M3 0 C1.8 20 4.2 40 3.1 62 C2 84 4.3 100 3.2 124 C2.2 146 4.1 160 2.9 182 C1.7 204 4.2 220 3 240' fill='none' stroke='black' stroke-width='2'/%3E%3C/svg%3E");
+	--rule-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='240' height='6'%3E%3Cpath d='M0 3 C20 1.8 40 4.2 62 3.1 C84 2 100 4.3 124 3.2 C146 2.2 160 4.1 182 2.9 C204 1.7 220 4.2 240 3 L240 0 L0 0 Z' fill='black'/%3E%3C/svg%3E");
+}
+.hero, .update-rows, .update-rows > li, .footer-bottom { position: relative; }
+.site-header::after, .hero::after, .update-rows > li::after, .update-rows::before, .footer-bottom::before {
+	content: ""; position: absolute; z-index: 1; left: 0; right: 0; height: 6px;
+	background: var(--line); pointer-events: none;
+	-webkit-mask: var(--rule) left center / 240px 6px repeat-x; mask: var(--rule) left center / 240px 6px repeat-x;
+}
+.site-header::after, .hero::after, .update-rows > li::after { bottom: -4px; }
+.update-rows::before, .footer-bottom::before { top: -4px; }
+.update-rows > li::after, .footer-bottom::before { -webkit-mask-image: var(--rule-thin); mask-image: var(--rule-thin); }
+.update-rows > li::after { bottom: -3.5px; }
+.footer-bottom::before { top: -3.5px; background: #557074; }
+/* Where a divider separates two colours, the upper colour is cut along the same wobble, so no colour ends up on the wrong side of the line. */
+.site-header, .hero { background-clip: padding-box; }
+.site-header { margin-bottom: -4px; }
+.site-header::before, .hero::before {
+	content: ""; position: absolute; left: 0; right: 0; bottom: -4px; height: 6px; pointer-events: none;
+	-webkit-mask: var(--rule-fill) left center / 240px 6px repeat-x; mask: var(--rule-fill) left center / 240px 6px repeat-x;
+}
+.site-header::before { background: var(--bg); }
+.hero::before { background: var(--band); }
+/* The footer has no line, just a colour change, so its top edge is cut along the same wobble (the fill shape, flipped upside down). */
+.site-footer { position: relative; }
+.site-footer::before {
+	content: ""; position: absolute; left: 0; right: 0; top: -5px; height: 6px; pointer-events: none;
+	background: var(--footer); transform: scaleY(-1);
+	-webkit-mask: var(--rule-fill) left center / 240px 6px repeat-x; mask: var(--rule-fill) left center / 240px 6px repeat-x;
+}
+
+/* ---------- Pen frames: a hand-drawn shape around videos, game cards and screenshots ---------- */
+/* Each frame is one uneven outline, used three times: to cut the picture to shape (-fill), to draw the line (-line), and for the offset shadow. */
+/* There are a few different outlines of each kind, handed out in turn, so neighbouring boxes do not look identical. */
+:root {
+	--frame-wide-1-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M15.26 3 C30.86 2.99 48.11 2.86 62.05 2.96 C75.99 3.06 85.83 3.41 98.9 3.6 C111.96 3.79 127.18 4.03 140.44 4.09 C153.71 4.14 164.41 3.97 178.5 3.93 C192.59 3.9 209.45 3.8 225 3.87 C240.55 3.94 257.77 4.5 271.82 4.35 C285.88 4.21 296.84 3.45 309.34 3 C313.04 2.83 316.99 5.7 317 11.94 C317.32 21.26 317.86 30.11 317.95 39.89 C318.04 49.68 317.84 60.46 317.52 70.63 C317.2 80.8 316.23 90.39 316.01 100.91 C315.79 111.44 316.05 122.92 316.22 133.8 C316.38 144.68 316.74 155.4 317 166.2 C317.12 172.66 312.08 176.84 307.16 177 C294 177.17 281.8 177.38 267.68 177.51 C253.57 177.63 236.87 178.02 222.48 177.75 C208.08 177.48 195.52 175.92 181.32 175.89 C167.12 175.86 150.86 177.39 137.27 177.58 C123.69 177.77 112.7 177.06 99.83 177.04 C86.95 177.03 73.97 177.49 60.05 177.48 C46.13 177.47 30.89 177.16 16.31 177 C5.96 176.57 2.98 171.93 3 168.6 C3.14 159.19 3.52 150.14 3.43 140.37 C3.33 130.6 2.3 121.09 2.42 109.99 C2.54 98.89 4.19 84.44 4.15 73.78 C4.11 63.12 2.37 55.97 2.17 46.03 C1.98 36.1 2.72 24.81 3 14.19 C3.15 5.83 7.45 2.89 15.26 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-wide-1-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M15.26 3 C30.86 2.99 48.11 2.86 62.05 2.96 C75.99 3.06 85.83 3.41 98.9 3.6 C111.96 3.79 127.18 4.03 140.44 4.09 C153.71 4.14 164.41 3.97 178.5 3.93 C192.59 3.9 209.45 3.8 225 3.87 C240.55 3.94 257.77 4.5 271.82 4.35 C285.88 4.21 296.84 3.45 309.34 3 C313.04 2.83 316.99 5.7 317 11.94 C317.32 21.26 317.86 30.11 317.95 39.89 C318.04 49.68 317.84 60.46 317.52 70.63 C317.2 80.8 316.23 90.39 316.01 100.91 C315.79 111.44 316.05 122.92 316.22 133.8 C316.38 144.68 316.74 155.4 317 166.2 C317.12 172.66 312.08 176.84 307.16 177 C294 177.17 281.8 177.38 267.68 177.51 C253.57 177.63 236.87 178.02 222.48 177.75 C208.08 177.48 195.52 175.92 181.32 175.89 C167.12 175.86 150.86 177.39 137.27 177.58 C123.69 177.77 112.7 177.06 99.83 177.04 C86.95 177.03 73.97 177.49 60.05 177.48 C46.13 177.47 30.89 177.16 16.31 177 C5.96 176.57 2.98 171.93 3 168.6 C3.14 159.19 3.52 150.14 3.43 140.37 C3.33 130.6 2.3 121.09 2.42 109.99 C2.54 98.89 4.19 84.44 4.15 73.78 C4.11 63.12 2.37 55.97 2.17 46.03 C1.98 36.1 2.72 24.81 3 14.19 C3.15 5.83 7.45 2.89 15.26 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-wide-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M12.54 3 C27.43 2.97 43.81 2.68 57.2 2.9 C70.58 3.13 78.9 4.45 92.85 4.35 C106.79 4.26 126.67 2.34 140.88 2.31 C155.08 2.27 164.85 4.06 178.07 4.15 C191.3 4.24 205.87 2.99 220.22 2.83 C234.57 2.67 249.43 3.17 264.18 3.2 C278.93 3.22 293.88 3.07 308.73 3 C312.63 3.21 316.99 6.81 317 11.05 C317.41 21.01 318.13 30.08 318.22 40.91 C318.31 51.75 317.76 65.9 317.53 76.05 C317.3 86.19 316.78 92.24 316.83 101.79 C316.88 111.34 317.81 122.29 317.84 133.36 C317.87 144.44 317.28 156.62 317 168.25 C317.1 173.72 313.19 177.08 308.13 177 C294.07 177.09 280.63 177.08 265.96 177.27 C251.29 177.45 233.38 178.06 220.1 178.11 C206.82 178.17 199.84 177.63 186.29 177.61 C172.74 177.58 153.34 178.09 138.8 177.96 C124.26 177.83 113.35 177.07 99.05 176.81 C84.74 176.55 66.96 176.38 52.97 176.41 C38.97 176.44 27.7 176.8 15.06 177 C6.86 176.8 3.05 170.5 3 163.37 C3.12 151.55 3.35 139.93 3.37 127.9 C3.39 115.86 3.13 103.18 3.13 91.13 C3.13 79.09 3.4 68.51 3.38 55.64 C3.35 42.76 3.13 27.79 3 13.87 C2.62 6.61 7.02 2.86 12.54 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-wide-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M12.54 3 C27.43 2.97 43.81 2.68 57.2 2.9 C70.58 3.13 78.9 4.45 92.85 4.35 C106.79 4.26 126.67 2.34 140.88 2.31 C155.08 2.27 164.85 4.06 178.07 4.15 C191.3 4.24 205.87 2.99 220.22 2.83 C234.57 2.67 249.43 3.17 264.18 3.2 C278.93 3.22 293.88 3.07 308.73 3 C312.63 3.21 316.99 6.81 317 11.05 C317.41 21.01 318.13 30.08 318.22 40.91 C318.31 51.75 317.76 65.9 317.53 76.05 C317.3 86.19 316.78 92.24 316.83 101.79 C316.88 111.34 317.81 122.29 317.84 133.36 C317.87 144.44 317.28 156.62 317 168.25 C317.1 173.72 313.19 177.08 308.13 177 C294.07 177.09 280.63 177.08 265.96 177.27 C251.29 177.45 233.38 178.06 220.1 178.11 C206.82 178.17 199.84 177.63 186.29 177.61 C172.74 177.58 153.34 178.09 138.8 177.96 C124.26 177.83 113.35 177.07 99.05 176.81 C84.74 176.55 66.96 176.38 52.97 176.41 C38.97 176.44 27.7 176.8 15.06 177 C6.86 176.8 3.05 170.5 3 163.37 C3.12 151.55 3.35 139.93 3.37 127.9 C3.39 115.86 3.13 103.18 3.13 91.13 C3.13 79.09 3.4 68.51 3.38 55.64 C3.35 42.76 3.13 27.79 3 13.87 C2.62 6.61 7.02 2.86 12.54 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-wide-3-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M15.14 3 C28.27 2.63 39.89 1.85 54.53 1.88 C69.18 1.91 88.75 2.81 102.98 3.17 C117.22 3.53 126.85 4.3 139.97 4.04 C153.09 3.78 167.2 1.57 181.7 1.62 C196.21 1.67 212.16 4.19 227.02 4.34 C241.88 4.49 257.18 2.75 270.87 2.52 C284.57 2.3 296.42 2.84 309.2 3 C312.39 2.98 316.81 5.64 317 12.46 C316.9 23.06 316.54 33.61 316.7 44.26 C316.86 54.91 317.7 65.87 317.94 76.37 C318.18 86.87 318.34 97.1 318.13 107.26 C317.93 117.43 316.89 127.32 316.7 137.36 C316.51 147.39 316.9 157.44 317 167.49 C316.78 173.92 314.03 176.97 308.16 177 C292.75 176.84 275.73 176.28 261.92 176.51 C248.11 176.73 239.16 178.37 225.3 178.35 C211.43 178.34 191.91 176.85 178.73 176.41 C165.55 175.97 160.03 175.47 146.21 175.71 C132.39 175.94 110.6 177.58 95.8 177.84 C80.99 178.11 70.68 177.46 57.38 177.32 C44.09 177.18 29.81 177.11 16.02 177 C5.55 176.64 2.7 173.81 3 168.33 C3.21 158.98 3.49 150.44 3.62 140.28 C3.75 130.11 3.83 117.59 3.76 107.35 C3.7 97.11 3.28 89.12 3.21 78.83 C3.14 68.54 3.4 56.46 3.36 45.6 C3.33 34.75 3.12 24.33 3 13.7 C2.84 5.41 7.17 2.74 15.14 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-wide-3-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M15.14 3 C28.27 2.63 39.89 1.85 54.53 1.88 C69.18 1.91 88.75 2.81 102.98 3.17 C117.22 3.53 126.85 4.3 139.97 4.04 C153.09 3.78 167.2 1.57 181.7 1.62 C196.21 1.67 212.16 4.19 227.02 4.34 C241.88 4.49 257.18 2.75 270.87 2.52 C284.57 2.3 296.42 2.84 309.2 3 C312.39 2.98 316.81 5.64 317 12.46 C316.9 23.06 316.54 33.61 316.7 44.26 C316.86 54.91 317.7 65.87 317.94 76.37 C318.18 86.87 318.34 97.1 318.13 107.26 C317.93 117.43 316.89 127.32 316.7 137.36 C316.51 147.39 316.9 157.44 317 167.49 C316.78 173.92 314.03 176.97 308.16 177 C292.75 176.84 275.73 176.28 261.92 176.51 C248.11 176.73 239.16 178.37 225.3 178.35 C211.43 178.34 191.91 176.85 178.73 176.41 C165.55 175.97 160.03 175.47 146.21 175.71 C132.39 175.94 110.6 177.58 95.8 177.84 C80.99 178.11 70.68 177.46 57.38 177.32 C44.09 177.18 29.81 177.11 16.02 177 C5.55 176.64 2.7 173.81 3 168.33 C3.21 158.98 3.49 150.44 3.62 140.28 C3.75 130.11 3.83 117.59 3.76 107.35 C3.7 97.11 3.28 89.12 3.21 78.83 C3.14 68.54 3.4 56.46 3.36 45.6 C3.33 34.75 3.12 24.33 3 13.7 C2.84 5.41 7.17 2.74 15.14 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-wide-4-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M10.8 3 C26.18 2.93 42.81 2.88 56.95 2.78 C71.1 2.68 82.83 2.5 95.67 2.39 C108.51 2.27 119.86 1.99 133.99 2.08 C148.13 2.16 165.41 2.5 180.5 2.89 C195.58 3.27 210.86 4.55 224.5 4.39 C238.14 4.24 248.56 2.18 262.34 1.95 C276.11 1.72 292.22 2.65 307.16 3 C313 2.78 317.14 6.99 317 13.73 C316.98 24.69 316.71 35.84 316.94 46.62 C317.16 57.4 318.53 68.6 318.35 78.4 C318.18 88.2 316.07 96.39 315.9 105.43 C315.72 114.48 317.11 122.41 317.3 132.67 C317.48 142.93 317.1 155.56 317 167 C316.97 174.2 312.48 176.94 308.26 177 C295.21 176.95 282.44 177.06 269.09 176.86 C255.74 176.67 242.96 175.94 228.16 175.83 C213.36 175.72 194.48 175.78 180.3 176.19 C166.11 176.59 157.67 178.12 143.06 178.26 C128.45 178.41 108.42 177.47 92.64 177.08 C76.85 176.69 62.01 175.92 48.36 175.91 C34.71 175.9 23.28 176.64 10.74 177 C6.42 176.98 3.1 173.2 3 165.02 C3.16 154.24 3.3 142.59 3.48 132.7 C3.66 122.82 4.27 116.09 4.06 105.69 C3.85 95.29 2.3 80.49 2.21 70.3 C2.12 60.11 3.37 54.5 3.5 44.56 C3.63 34.63 3.17 21.98 3 10.69 C3.35 5.12 6.88 2.96 10.8 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-wide-4-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M10.8 3 C26.18 2.93 42.81 2.88 56.95 2.78 C71.1 2.68 82.83 2.5 95.67 2.39 C108.51 2.27 119.86 1.99 133.99 2.08 C148.13 2.16 165.41 2.5 180.5 2.89 C195.58 3.27 210.86 4.55 224.5 4.39 C238.14 4.24 248.56 2.18 262.34 1.95 C276.11 1.72 292.22 2.65 307.16 3 C313 2.78 317.14 6.99 317 13.73 C316.98 24.69 316.71 35.84 316.94 46.62 C317.16 57.4 318.53 68.6 318.35 78.4 C318.18 88.2 316.07 96.39 315.9 105.43 C315.72 114.48 317.11 122.41 317.3 132.67 C317.48 142.93 317.1 155.56 317 167 C316.97 174.2 312.48 176.94 308.26 177 C295.21 176.95 282.44 177.06 269.09 176.86 C255.74 176.67 242.96 175.94 228.16 175.83 C213.36 175.72 194.48 175.78 180.3 176.19 C166.11 176.59 157.67 178.12 143.06 178.26 C128.45 178.41 108.42 177.47 92.64 177.08 C76.85 176.69 62.01 175.92 48.36 175.91 C34.71 175.9 23.28 176.64 10.74 177 C6.42 176.98 3.1 173.2 3 165.02 C3.16 154.24 3.3 142.59 3.48 132.7 C3.66 122.82 4.27 116.09 4.06 105.69 C3.85 95.29 2.3 80.49 2.21 70.3 C2.12 60.11 3.37 54.5 3.5 44.56 C3.63 34.63 3.17 21.98 3 10.69 C3.35 5.12 6.88 2.96 10.8 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-wide-5-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M12.65 3 C26.19 3.03 39.76 2.94 53.29 3.09 C66.83 3.25 79.65 3.75 93.85 3.93 C108.06 4.1 124.08 4.24 138.5 4.13 C152.92 4.02 166.18 3.22 180.39 3.26 C194.6 3.3 209.77 4.53 223.75 4.36 C237.72 4.2 250.46 2.5 264.25 2.27 C278.04 2.05 292.4 2.76 306.48 3 C311.1 3.14 316.88 7.86 317 12.74 C316.91 25.9 316.81 39.69 316.73 52.21 C316.66 64.74 316.57 75.38 316.53 87.9 C316.5 100.42 316.42 114.75 316.5 127.35 C316.58 139.95 316.83 151.44 317 163.49 C316.69 170.86 311.82 176.76 304.72 177 C290.26 176.55 275.96 175.78 261.34 175.66 C246.72 175.55 230.75 176.31 217 176.32 C203.25 176.33 192.13 175.74 178.84 175.73 C165.55 175.72 150.73 175.84 137.27 176.27 C123.81 176.69 112.29 178.06 98.09 178.27 C83.89 178.48 66.44 177.72 52.09 177.51 C37.74 177.3 25.35 177.17 11.98 177 C6.86 177.26 3.38 172.6 3 164.03 C3.23 154.52 3.86 146.21 3.69 135.5 C3.51 124.79 2.29 110.51 1.97 99.78 C1.65 89.05 1.78 80.96 1.75 71.1 C1.72 61.25 1.6 50.52 1.81 40.64 C2.01 30.77 2.6 21.46 3 11.87 C2.94 6.66 6 3.36 12.65 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-wide-5-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 320 180' preserveAspectRatio='none'%3E%3Cpath d='M12.65 3 C26.19 3.03 39.76 2.94 53.29 3.09 C66.83 3.25 79.65 3.75 93.85 3.93 C108.06 4.1 124.08 4.24 138.5 4.13 C152.92 4.02 166.18 3.22 180.39 3.26 C194.6 3.3 209.77 4.53 223.75 4.36 C237.72 4.2 250.46 2.5 264.25 2.27 C278.04 2.05 292.4 2.76 306.48 3 C311.1 3.14 316.88 7.86 317 12.74 C316.91 25.9 316.81 39.69 316.73 52.21 C316.66 64.74 316.57 75.38 316.53 87.9 C316.5 100.42 316.42 114.75 316.5 127.35 C316.58 139.95 316.83 151.44 317 163.49 C316.69 170.86 311.82 176.76 304.72 177 C290.26 176.55 275.96 175.78 261.34 175.66 C246.72 175.55 230.75 176.31 217 176.32 C203.25 176.33 192.13 175.74 178.84 175.73 C165.55 175.72 150.73 175.84 137.27 176.27 C123.81 176.69 112.29 178.06 98.09 178.27 C83.89 178.48 66.44 177.72 52.09 177.51 C37.74 177.3 25.35 177.17 11.98 177 C6.86 177.26 3.38 172.6 3 164.03 C3.23 154.52 3.86 146.21 3.69 135.5 C3.51 124.79 2.29 110.51 1.97 99.78 C1.65 89.05 1.78 80.96 1.75 71.1 C1.72 61.25 1.6 50.52 1.81 40.64 C2.01 30.77 2.6 21.46 3 11.87 C2.94 6.66 6 3.36 12.65 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-card-1-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M16.01 3 C28.96 2.7 40.68 2.11 54.87 2.09 C69.06 2.06 86.49 2.65 101.14 2.84 C115.79 3.03 129.95 3.39 142.78 3.22 C155.62 3.05 164.79 1.87 178.14 1.83 C191.49 1.79 207.98 2.61 222.89 3 C232.87 2.94 236.71 10.09 237 16.67 C236.61 28.79 235.67 40.34 235.82 53.03 C235.98 65.72 237.91 80.24 237.92 92.81 C237.93 105.37 236.24 117.02 235.88 128.42 C235.52 139.82 235.56 149.18 235.75 161.21 C235.93 173.23 236.58 187.45 237 200.58 C236.96 209.75 230.91 216.81 221.3 217 C206.46 216.63 190.72 215.89 176.78 215.89 C162.84 215.89 151.6 216.63 137.66 217 C123.71 217.37 106.06 218.09 93.13 218.11 C80.21 218.12 73.05 217.25 60.1 217.07 C47.14 216.88 30.29 217.02 15.38 217 C6.29 217.19 2.69 214.32 3 208.07 C2.85 196.57 2.75 184.13 2.56 173.56 C2.37 163 1.61 155.15 1.87 144.68 C2.13 134.21 3.75 121.7 4.13 110.74 C4.51 99.78 4.42 89.86 4.14 78.92 C3.86 67.97 2.64 55.51 2.45 45.06 C2.25 34.62 2.82 25.84 3 16.22 C2.77 8.65 8.11 2.7 16.01 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-card-1-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M16.01 3 C28.96 2.7 40.68 2.11 54.87 2.09 C69.06 2.06 86.49 2.65 101.14 2.84 C115.79 3.03 129.95 3.39 142.78 3.22 C155.62 3.05 164.79 1.87 178.14 1.83 C191.49 1.79 207.98 2.61 222.89 3 C232.87 2.94 236.71 10.09 237 16.67 C236.61 28.79 235.67 40.34 235.82 53.03 C235.98 65.72 237.91 80.24 237.92 92.81 C237.93 105.37 236.24 117.02 235.88 128.42 C235.52 139.82 235.56 149.18 235.75 161.21 C235.93 173.23 236.58 187.45 237 200.58 C236.96 209.75 230.91 216.81 221.3 217 C206.46 216.63 190.72 215.89 176.78 215.89 C162.84 215.89 151.6 216.63 137.66 217 C123.71 217.37 106.06 218.09 93.13 218.11 C80.21 218.12 73.05 217.25 60.1 217.07 C47.14 216.88 30.29 217.02 15.38 217 C6.29 217.19 2.69 214.32 3 208.07 C2.85 196.57 2.75 184.13 2.56 173.56 C2.37 163 1.61 155.15 1.87 144.68 C2.13 134.21 3.75 121.7 4.13 110.74 C4.51 99.78 4.42 89.86 4.14 78.92 C3.86 67.97 2.64 55.51 2.45 45.06 C2.25 34.62 2.82 25.84 3 16.22 C2.77 8.65 8.11 2.7 16.01 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-card-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M16.84 3 C31.57 3.32 47.67 4.13 61.01 3.95 C74.36 3.77 82.93 1.95 96.9 1.93 C110.88 1.91 131.24 3.82 144.88 3.82 C158.52 3.82 165.72 2.07 178.73 1.93 C191.74 1.8 208.19 2.64 222.92 3 C228.89 3.06 236.81 8.63 237 18.48 C236.87 28.34 236.62 38.06 236.61 48.06 C236.61 58.06 237.07 67.98 236.96 78.5 C236.85 89.02 235.9 100.36 235.97 111.19 C236.03 122.02 237.2 132.99 237.35 143.47 C237.51 153.95 236.95 163.78 236.89 174.06 C236.83 184.33 236.96 194.77 237 205.13 C236.98 210.04 229.08 216.89 222.53 217 C207.55 217.32 191.61 217.75 177.61 217.96 C163.61 218.18 151.37 218.37 138.5 218.31 C125.64 218.24 114.15 217.98 100.42 217.58 C86.69 217.17 70.73 215.96 56.1 215.86 C41.47 215.77 27.13 216.62 12.65 217 C5.89 217.33 3 209.8 3 202.93 C3.2 193.47 3.42 184.86 3.61 174.56 C3.8 164.25 4.3 152.63 4.12 141.12 C3.95 129.6 2.76 116.71 2.58 105.47 C2.39 94.22 3.09 83.58 3.03 73.67 C2.97 63.75 2.21 56.17 2.2 46 C2.2 35.83 2.73 23.76 3 12.64 C2.86 7.55 9.63 3.11 16.84 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-card-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M16.84 3 C31.57 3.32 47.67 4.13 61.01 3.95 C74.36 3.77 82.93 1.95 96.9 1.93 C110.88 1.91 131.24 3.82 144.88 3.82 C158.52 3.82 165.72 2.07 178.73 1.93 C191.74 1.8 208.19 2.64 222.92 3 C228.89 3.06 236.81 8.63 237 18.48 C236.87 28.34 236.62 38.06 236.61 48.06 C236.61 58.06 237.07 67.98 236.96 78.5 C236.85 89.02 235.9 100.36 235.97 111.19 C236.03 122.02 237.2 132.99 237.35 143.47 C237.51 153.95 236.95 163.78 236.89 174.06 C236.83 184.33 236.96 194.77 237 205.13 C236.98 210.04 229.08 216.89 222.53 217 C207.55 217.32 191.61 217.75 177.61 217.96 C163.61 218.18 151.37 218.37 138.5 218.31 C125.64 218.24 114.15 217.98 100.42 217.58 C86.69 217.17 70.73 215.96 56.1 215.86 C41.47 215.77 27.13 216.62 12.65 217 C5.89 217.33 3 209.8 3 202.93 C3.2 193.47 3.42 184.86 3.61 174.56 C3.8 164.25 4.3 152.63 4.12 141.12 C3.95 129.6 2.76 116.71 2.58 105.47 C2.39 94.22 3.09 83.58 3.03 73.67 C2.97 63.75 2.21 56.17 2.2 46 C2.2 35.83 2.73 23.76 3 12.64 C2.86 7.55 9.63 3.11 16.84 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-card-3-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M12 3 C24.37 2.73 35.43 2.38 49.11 2.2 C62.8 2.01 79.26 1.99 94.1 1.9 C108.95 1.82 123.37 1.6 138.2 1.68 C153.03 1.75 169.09 2.14 183.09 2.36 C197.09 2.58 209.18 2.79 222.22 3 C229.65 2.84 237.15 11.09 237 17.3 C237.28 27.31 237.62 36.53 237.85 47.32 C238.07 58.11 238.51 71.85 238.34 82.04 C238.17 92.23 237.08 98.29 236.82 108.47 C236.55 118.64 236.59 132.45 236.75 143.12 C236.91 153.78 237.73 162.1 237.77 172.47 C237.81 182.84 237.26 194.37 237 205.32 C236.84 211.38 234.57 217.42 227.92 217 C215.36 217.25 204.63 217.85 190.23 217.75 C175.83 217.66 155.78 216.75 141.54 216.42 C127.3 216.09 119.59 215.73 104.81 215.78 C90.04 215.83 67.92 216.51 52.89 216.72 C37.85 216.92 27.38 216.91 14.63 217 C8.35 216.86 3.36 214.54 3 207.9 C2.55 197.97 1.8 188.56 1.65 178.13 C1.51 167.71 1.71 156.1 2.14 145.32 C2.58 134.55 4.15 123.73 4.27 113.46 C4.39 103.2 3.11 95.04 2.86 83.72 C2.62 72.41 2.77 56.75 2.79 45.57 C2.82 34.39 2.93 26.3 3 16.66 C3.12 6.61 7.89 3.22 12 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-card-3-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M12 3 C24.37 2.73 35.43 2.38 49.11 2.2 C62.8 2.01 79.26 1.99 94.1 1.9 C108.95 1.82 123.37 1.6 138.2 1.68 C153.03 1.75 169.09 2.14 183.09 2.36 C197.09 2.58 209.18 2.79 222.22 3 C229.65 2.84 237.15 11.09 237 17.3 C237.28 27.31 237.62 36.53 237.85 47.32 C238.07 58.11 238.51 71.85 238.34 82.04 C238.17 92.23 237.08 98.29 236.82 108.47 C236.55 118.64 236.59 132.45 236.75 143.12 C236.91 153.78 237.73 162.1 237.77 172.47 C237.81 182.84 237.26 194.37 237 205.32 C236.84 211.38 234.57 217.42 227.92 217 C215.36 217.25 204.63 217.85 190.23 217.75 C175.83 217.66 155.78 216.75 141.54 216.42 C127.3 216.09 119.59 215.73 104.81 215.78 C90.04 215.83 67.92 216.51 52.89 216.72 C37.85 216.92 27.38 216.91 14.63 217 C8.35 216.86 3.36 214.54 3 207.9 C2.55 197.97 1.8 188.56 1.65 178.13 C1.51 167.71 1.71 156.1 2.14 145.32 C2.58 134.55 4.15 123.73 4.27 113.46 C4.39 103.2 3.11 95.04 2.86 83.72 C2.62 72.41 2.77 56.75 2.79 45.57 C2.82 34.39 2.93 26.3 3 16.66 C3.12 6.61 7.89 3.22 12 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-card-4-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M12.15 3 C25.39 3.23 37.85 3.47 51.87 3.68 C65.9 3.88 82.32 4.26 96.31 4.23 C110.3 4.2 121.6 3.86 135.84 3.51 C150.08 3.16 167.51 2.21 181.74 2.13 C195.96 2.04 208.03 2.71 221.17 3 C229.7 3.24 236.91 7.72 237 14.32 C236.59 26 235.62 37.96 235.76 49.37 C235.91 60.78 237.68 72.99 237.87 82.79 C238.06 92.59 237.04 97.62 236.91 108.18 C236.78 118.73 236.88 135.07 237.11 146.11 C237.34 157.14 238.31 164.03 238.29 174.37 C238.27 184.7 237.43 196.87 237 208.11 C236.76 212.39 233.24 217.26 227.25 217 C214.64 216.64 203.27 215.98 189.43 215.93 C175.58 215.87 160.05 216.35 144.18 216.67 C128.3 216.98 108.8 217.95 94.18 217.79 C79.56 217.63 69.97 215.84 56.48 215.71 C43 215.57 27.67 216.57 13.27 217 C6.35 216.92 3.43 213.38 3 202.56 C2.91 191.79 2.53 180.82 2.74 170.25 C2.94 159.68 4.37 148.94 4.22 139.14 C4.07 129.35 2.05 121.84 1.86 111.48 C1.67 101.12 2.86 88.2 3.1 76.98 C3.33 65.75 3.29 54.69 3.27 44.14 C3.26 33.58 3.09 23.81 3 13.64 C3.28 7.61 7.36 3 12.15 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-card-4-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 240 220' preserveAspectRatio='none'%3E%3Cpath d='M12.15 3 C25.39 3.23 37.85 3.47 51.87 3.68 C65.9 3.88 82.32 4.26 96.31 4.23 C110.3 4.2 121.6 3.86 135.84 3.51 C150.08 3.16 167.51 2.21 181.74 2.13 C195.96 2.04 208.03 2.71 221.17 3 C229.7 3.24 236.91 7.72 237 14.32 C236.59 26 235.62 37.96 235.76 49.37 C235.91 60.78 237.68 72.99 237.87 82.79 C238.06 92.59 237.04 97.62 236.91 108.18 C236.78 118.73 236.88 135.07 237.11 146.11 C237.34 157.14 238.31 164.03 238.29 174.37 C238.27 184.7 237.43 196.87 237 208.11 C236.76 212.39 233.24 217.26 227.25 217 C214.64 216.64 203.27 215.98 189.43 215.93 C175.58 215.87 160.05 216.35 144.18 216.67 C128.3 216.98 108.8 217.95 94.18 217.79 C79.56 217.63 69.97 215.84 56.48 215.71 C43 215.57 27.67 216.57 13.27 217 C6.35 216.92 3.43 213.38 3 202.56 C2.91 191.79 2.53 180.82 2.74 170.25 C2.94 159.68 4.37 148.94 4.22 139.14 C4.07 129.35 2.05 121.84 1.86 111.48 C1.67 101.12 2.86 88.2 3.1 76.98 C3.33 65.75 3.29 54.69 3.27 44.14 C3.26 33.58 3.09 23.81 3 13.64 C3.28 7.61 7.36 3 12.15 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+/* The big game card has its own outlines, drawn at its real proportions (one wide, one for phones) so the wobble and corners never look stretched. */
+:root {
+	--frame-feature-wide-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1120 340' preserveAspectRatio='none'%3E%3Cpath d='M17.06 3 C34.68 2.63 49.82 1.96 69.91 1.89 C90.01 1.81 117.87 2.43 137.63 2.56 C157.39 2.69 170.14 2.82 188.48 2.67 C206.82 2.52 228.5 1.61 247.7 1.66 C266.9 1.71 284.12 2.59 303.67 2.98 C323.23 3.37 347.31 4.24 365.02 4.03 C382.74 3.81 391.41 1.82 409.96 1.67 C428.51 1.51 455.89 3.07 476.33 3.11 C496.76 3.15 515.01 1.76 532.54 1.92 C550.08 2.07 562.34 3.76 581.54 4.02 C600.73 4.27 628.92 3.4 647.71 3.45 C666.5 3.51 676.86 4.56 694.26 4.36 C711.65 4.17 731.5 2.43 752.09 2.27 C772.69 2.12 798.14 3.14 817.83 3.43 C837.52 3.73 852.5 4.14 870.23 4.05 C887.95 3.97 904.43 3.01 924.18 2.93 C943.93 2.86 969.71 3.78 988.73 3.62 C1007.74 3.46 1019.94 2.07 1038.29 1.96 C1056.63 1.86 1078.64 2.65 1098.82 3 C1112.38 2.61 1117.09 9.82 1117 18.54 C1117.38 32.03 1117.95 44.51 1118.14 58.99 C1118.34 73.48 1118.56 89.46 1118.16 105.46 C1117.76 121.46 1115.93 140.64 1115.75 154.99 C1115.57 169.34 1116.69 177.6 1117.08 191.53 C1117.47 205.46 1117.93 224.14 1118.07 238.56 C1118.21 252.99 1118.09 263.61 1117.92 278.06 C1117.74 292.5 1117.31 309.52 1117 325.25 C1117.23 332.38 1108.88 337.21 1095.16 337 C1076.98 336.94 1059.39 336.86 1040.62 336.83 C1021.85 336.81 1002.91 336.91 982.54 336.84 C962.17 336.76 936.44 336.58 918.4 336.39 C900.37 336.19 892.88 335.52 874.32 335.66 C855.76 335.8 826.22 336.98 807.03 337.21 C787.84 337.44 776.56 337.1 759.17 337.06 C741.79 337.02 723.55 337.12 702.71 336.96 C681.87 336.8 654.41 336.28 634.13 336.11 C613.84 335.94 599.07 335.72 581 335.95 C562.93 336.19 544.98 337.17 525.72 337.53 C506.47 337.89 483.83 338 465.46 338.1 C447.08 338.2 433.83 338.1 415.45 338.12 C397.08 338.14 375.26 338.3 355.21 338.21 C335.16 338.12 314.85 337.75 295.16 337.58 C275.46 337.42 254.59 337.52 237.02 337.24 C219.46 336.96 207.17 335.72 189.75 335.9 C172.33 336.07 151.62 338.04 132.48 338.29 C113.33 338.53 94.57 337.58 74.89 337.37 C55.21 337.15 34.56 337.12 14.39 337 C6.09 336.6 2.63 330.24 3 314.33 C2.81 300.44 2.62 286.29 2.42 272.65 C2.21 259.01 1.61 246.7 1.77 232.48 C1.93 218.25 3.34 201.52 3.38 187.33 C3.43 173.14 2.25 161.52 2.02 147.34 C1.79 133.16 1.73 117.37 2 102.25 C2.27 87.12 3.48 71.1 3.65 56.6 C3.81 42.09 3.22 29.02 3 15.23 C2.78 7.27 5.97 3.14 17.06 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-feature-wide-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1120 340' preserveAspectRatio='none'%3E%3Cpath d='M17.06 3 C34.68 2.63 49.82 1.96 69.91 1.89 C90.01 1.81 117.87 2.43 137.63 2.56 C157.39 2.69 170.14 2.82 188.48 2.67 C206.82 2.52 228.5 1.61 247.7 1.66 C266.9 1.71 284.12 2.59 303.67 2.98 C323.23 3.37 347.31 4.24 365.02 4.03 C382.74 3.81 391.41 1.82 409.96 1.67 C428.51 1.51 455.89 3.07 476.33 3.11 C496.76 3.15 515.01 1.76 532.54 1.92 C550.08 2.07 562.34 3.76 581.54 4.02 C600.73 4.27 628.92 3.4 647.71 3.45 C666.5 3.51 676.86 4.56 694.26 4.36 C711.65 4.17 731.5 2.43 752.09 2.27 C772.69 2.12 798.14 3.14 817.83 3.43 C837.52 3.73 852.5 4.14 870.23 4.05 C887.95 3.97 904.43 3.01 924.18 2.93 C943.93 2.86 969.71 3.78 988.73 3.62 C1007.74 3.46 1019.94 2.07 1038.29 1.96 C1056.63 1.86 1078.64 2.65 1098.82 3 C1112.38 2.61 1117.09 9.82 1117 18.54 C1117.38 32.03 1117.95 44.51 1118.14 58.99 C1118.34 73.48 1118.56 89.46 1118.16 105.46 C1117.76 121.46 1115.93 140.64 1115.75 154.99 C1115.57 169.34 1116.69 177.6 1117.08 191.53 C1117.47 205.46 1117.93 224.14 1118.07 238.56 C1118.21 252.99 1118.09 263.61 1117.92 278.06 C1117.74 292.5 1117.31 309.52 1117 325.25 C1117.23 332.38 1108.88 337.21 1095.16 337 C1076.98 336.94 1059.39 336.86 1040.62 336.83 C1021.85 336.81 1002.91 336.91 982.54 336.84 C962.17 336.76 936.44 336.58 918.4 336.39 C900.37 336.19 892.88 335.52 874.32 335.66 C855.76 335.8 826.22 336.98 807.03 337.21 C787.84 337.44 776.56 337.1 759.17 337.06 C741.79 337.02 723.55 337.12 702.71 336.96 C681.87 336.8 654.41 336.28 634.13 336.11 C613.84 335.94 599.07 335.72 581 335.95 C562.93 336.19 544.98 337.17 525.72 337.53 C506.47 337.89 483.83 338 465.46 338.1 C447.08 338.2 433.83 338.1 415.45 338.12 C397.08 338.14 375.26 338.3 355.21 338.21 C335.16 338.12 314.85 337.75 295.16 337.58 C275.46 337.42 254.59 337.52 237.02 337.24 C219.46 336.96 207.17 335.72 189.75 335.9 C172.33 336.07 151.62 338.04 132.48 338.29 C113.33 338.53 94.57 337.58 74.89 337.37 C55.21 337.15 34.56 337.12 14.39 337 C6.09 336.6 2.63 330.24 3 314.33 C2.81 300.44 2.62 286.29 2.42 272.65 C2.21 259.01 1.61 246.7 1.77 232.48 C1.93 218.25 3.34 201.52 3.38 187.33 C3.43 173.14 2.25 161.52 2.02 147.34 C1.79 133.16 1.73 117.37 2 102.25 C2.27 87.12 3.48 71.1 3.65 56.6 C3.81 42.09 3.22 29.02 3 15.23 C2.78 7.27 5.97 3.14 17.06 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-feature-tall-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 380' preserveAspectRatio='none'%3E%3Cpath d='M18.7 3 C33.99 2.57 48.88 1.78 64.56 1.71 C80.24 1.65 96.98 2.5 112.78 2.61 C128.57 2.73 144.42 2.36 159.34 2.39 C174.25 2.43 186.51 2.49 202.29 2.81 C218.06 3.14 237.68 4.07 253.98 4.32 C270.28 4.58 284.63 4.56 300.1 4.34 C315.58 4.11 331.26 3.45 346.84 3 C352.88 2.96 356.84 6.55 357 13.46 C356.91 25.22 356.96 36.56 356.74 48.75 C356.52 60.94 355.47 72.94 355.68 86.59 C355.88 100.24 357.71 116.19 357.95 130.65 C358.19 145.11 357.06 160.68 357.1 173.34 C357.14 186 358.31 194.52 358.18 206.61 C358.05 218.7 356.51 233.22 356.29 245.87 C356.08 258.52 356.97 270 356.88 282.51 C356.78 295.02 355.7 307.45 355.72 320.93 C355.74 334.41 356.57 349.23 357 363.38 C357.29 370.05 351.21 376.76 345.93 377 C331.51 377.08 317.63 377.32 302.69 377.23 C287.75 377.15 272.08 376.72 256.28 376.49 C240.47 376.25 224.22 375.94 207.86 375.83 C191.51 375.71 174.19 375.56 158.14 375.78 C142.09 375.99 127.58 376.89 111.58 377.1 C95.57 377.32 78.49 377.07 62.1 377.06 C45.72 377.04 29.53 377.02 13.25 377 C5.19 376.78 2.86 371.59 3 364.86 C3.23 352.42 3.68 340.8 3.69 327.54 C3.7 314.28 3.32 298.49 3.05 285.28 C2.77 272.07 2.03 260.52 2.04 248.29 C2.05 236.06 3.12 224.85 3.1 211.92 C3.09 198.99 1.84 184.62 1.93 170.7 C2.01 156.78 3.39 141.62 3.6 128.38 C3.82 115.14 3.18 103.27 3.21 91.26 C3.23 79.26 3.81 68.92 3.77 56.37 C3.74 43.81 3.26 29.4 3 15.92 C2.99 10.19 11.2 2.89 18.7 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-feature-tall-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 380' preserveAspectRatio='none'%3E%3Cpath d='M18.7 3 C33.99 2.57 48.88 1.78 64.56 1.71 C80.24 1.65 96.98 2.5 112.78 2.61 C128.57 2.73 144.42 2.36 159.34 2.39 C174.25 2.43 186.51 2.49 202.29 2.81 C218.06 3.14 237.68 4.07 253.98 4.32 C270.28 4.58 284.63 4.56 300.1 4.34 C315.58 4.11 331.26 3.45 346.84 3 C352.88 2.96 356.84 6.55 357 13.46 C356.91 25.22 356.96 36.56 356.74 48.75 C356.52 60.94 355.47 72.94 355.68 86.59 C355.88 100.24 357.71 116.19 357.95 130.65 C358.19 145.11 357.06 160.68 357.1 173.34 C357.14 186 358.31 194.52 358.18 206.61 C358.05 218.7 356.51 233.22 356.29 245.87 C356.08 258.52 356.97 270 356.88 282.51 C356.78 295.02 355.7 307.45 355.72 320.93 C355.74 334.41 356.57 349.23 357 363.38 C357.29 370.05 351.21 376.76 345.93 377 C331.51 377.08 317.63 377.32 302.69 377.23 C287.75 377.15 272.08 376.72 256.28 376.49 C240.47 376.25 224.22 375.94 207.86 375.83 C191.51 375.71 174.19 375.56 158.14 375.78 C142.09 375.99 127.58 376.89 111.58 377.1 C95.57 377.32 78.49 377.07 62.1 377.06 C45.72 377.04 29.53 377.02 13.25 377 C5.19 376.78 2.86 371.59 3 364.86 C3.23 352.42 3.68 340.8 3.69 327.54 C3.7 314.28 3.32 298.49 3.05 285.28 C2.77 272.07 2.03 260.52 2.04 248.29 C2.05 236.06 3.12 224.85 3.1 211.92 C3.09 198.99 1.84 184.62 1.93 170.7 C2.01 156.78 3.39 141.62 3.6 128.38 C3.82 115.14 3.18 103.27 3.21 91.26 C3.23 79.26 3.81 68.92 3.77 56.37 C3.74 43.81 3.26 29.4 3 15.92 C2.99 10.19 11.2 2.89 18.7 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-feature-wide-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1120 340' preserveAspectRatio='none'%3E%3Cpath d='M21.1 3 C41.74 3.29 64.79 4.05 83.03 3.87 C101.26 3.69 111.96 1.92 130.51 1.92 C149.05 1.91 174.79 3.55 194.31 3.82 C213.84 4.09 229 3.47 247.68 3.56 C266.36 3.65 287.2 4.31 306.4 4.36 C325.6 4.42 343.43 4.1 362.86 3.89 C382.29 3.68 404.44 3.16 422.97 3.11 C441.5 3.06 455.28 3.5 474.04 3.6 C492.81 3.7 516.08 3.85 535.54 3.7 C554.99 3.55 572.3 2.87 590.76 2.68 C609.21 2.5 627.59 2.57 646.28 2.6 C664.98 2.63 684.71 2.98 702.93 2.88 C721.15 2.78 737.57 2.05 755.61 2.01 C773.65 1.98 791.79 2.73 811.17 2.67 C830.54 2.61 852.11 1.52 871.85 1.67 C891.58 1.81 911.04 3.17 929.6 3.56 C948.16 3.95 964.38 4.2 983.22 3.99 C1002.06 3.78 1023.01 2.45 1042.65 2.28 C1062.29 2.12 1081.61 2.76 1101.08 3 C1112.81 2.9 1117.16 9.56 1117 15.02 C1116.79 30.56 1116.59 47.47 1116.38 61.65 C1116.18 75.82 1115.66 86.33 1115.76 100.09 C1115.87 113.86 1116.96 128.64 1117.02 144.22 C1117.09 159.8 1116.07 178.55 1116.13 193.56 C1116.2 208.57 1117.33 220.55 1117.42 234.29 C1117.52 248.04 1116.8 261.56 1116.73 276.05 C1116.66 290.55 1116.91 306.21 1117 321.29 C1116.7 332.17 1109.49 337.23 1102.84 337 C1082.91 336.88 1062.4 336.68 1043.06 336.64 C1023.73 336.59 1005.06 336.89 986.83 336.72 C968.59 336.55 952.36 335.46 933.67 335.62 C914.97 335.78 894.69 337.39 874.64 337.67 C854.58 337.96 831.86 337.38 813.33 337.35 C794.81 337.33 780.89 337.63 763.48 337.53 C746.07 337.42 728.92 336.74 708.88 336.72 C688.85 336.7 662.94 337.36 643.27 337.4 C623.61 337.45 607.96 336.91 590.89 337.02 C573.81 337.14 560.18 338.14 540.83 338.1 C521.49 338.05 494.7 336.96 474.8 336.76 C454.89 336.55 440.97 336.83 421.41 336.86 C401.84 336.9 377.09 337.12 357.42 336.98 C337.74 336.84 322.35 336.02 303.37 336.02 C284.38 336.01 261.45 336.6 243.53 336.96 C225.6 337.33 214.34 338.32 195.84 338.2 C177.33 338.08 152.14 336.22 132.49 336.25 C112.85 336.27 96.33 338.24 77.97 338.36 C59.61 338.49 40.86 337.45 22.31 337 C12.32 337.12 2.92 327.45 3 320.06 C3.18 306.17 3.31 293.3 3.54 278.41 C3.77 263.52 4.32 244.21 4.38 230.72 C4.45 217.24 4.11 210.18 3.92 197.51 C3.73 184.84 3.22 169.88 3.25 154.72 C3.28 139.55 4.35 121.04 4.1 106.52 C3.85 92 1.94 81.59 1.76 67.61 C1.57 53.63 2.59 37.62 3 22.62 C2.93 13.72 13.26 3.19 21.1 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-feature-wide-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 1120 340' preserveAspectRatio='none'%3E%3Cpath d='M21.1 3 C41.74 3.29 64.79 4.05 83.03 3.87 C101.26 3.69 111.96 1.92 130.51 1.92 C149.05 1.91 174.79 3.55 194.31 3.82 C213.84 4.09 229 3.47 247.68 3.56 C266.36 3.65 287.2 4.31 306.4 4.36 C325.6 4.42 343.43 4.1 362.86 3.89 C382.29 3.68 404.44 3.16 422.97 3.11 C441.5 3.06 455.28 3.5 474.04 3.6 C492.81 3.7 516.08 3.85 535.54 3.7 C554.99 3.55 572.3 2.87 590.76 2.68 C609.21 2.5 627.59 2.57 646.28 2.6 C664.98 2.63 684.71 2.98 702.93 2.88 C721.15 2.78 737.57 2.05 755.61 2.01 C773.65 1.98 791.79 2.73 811.17 2.67 C830.54 2.61 852.11 1.52 871.85 1.67 C891.58 1.81 911.04 3.17 929.6 3.56 C948.16 3.95 964.38 4.2 983.22 3.99 C1002.06 3.78 1023.01 2.45 1042.65 2.28 C1062.29 2.12 1081.61 2.76 1101.08 3 C1112.81 2.9 1117.16 9.56 1117 15.02 C1116.79 30.56 1116.59 47.47 1116.38 61.65 C1116.18 75.82 1115.66 86.33 1115.76 100.09 C1115.87 113.86 1116.96 128.64 1117.02 144.22 C1117.09 159.8 1116.07 178.55 1116.13 193.56 C1116.2 208.57 1117.33 220.55 1117.42 234.29 C1117.52 248.04 1116.8 261.56 1116.73 276.05 C1116.66 290.55 1116.91 306.21 1117 321.29 C1116.7 332.17 1109.49 337.23 1102.84 337 C1082.91 336.88 1062.4 336.68 1043.06 336.64 C1023.73 336.59 1005.06 336.89 986.83 336.72 C968.59 336.55 952.36 335.46 933.67 335.62 C914.97 335.78 894.69 337.39 874.64 337.67 C854.58 337.96 831.86 337.38 813.33 337.35 C794.81 337.33 780.89 337.63 763.48 337.53 C746.07 337.42 728.92 336.74 708.88 336.72 C688.85 336.7 662.94 337.36 643.27 337.4 C623.61 337.45 607.96 336.91 590.89 337.02 C573.81 337.14 560.18 338.14 540.83 338.1 C521.49 338.05 494.7 336.96 474.8 336.76 C454.89 336.55 440.97 336.83 421.41 336.86 C401.84 336.9 377.09 337.12 357.42 336.98 C337.74 336.84 322.35 336.02 303.37 336.02 C284.38 336.01 261.45 336.6 243.53 336.96 C225.6 337.33 214.34 338.32 195.84 338.2 C177.33 338.08 152.14 336.22 132.49 336.25 C112.85 336.27 96.33 338.24 77.97 338.36 C59.61 338.49 40.86 337.45 22.31 337 C12.32 337.12 2.92 327.45 3 320.06 C3.18 306.17 3.31 293.3 3.54 278.41 C3.77 263.52 4.32 244.21 4.38 230.72 C4.45 217.24 4.11 210.18 3.92 197.51 C3.73 184.84 3.22 169.88 3.25 154.72 C3.28 139.55 4.35 121.04 4.1 106.52 C3.85 92 1.94 81.59 1.76 67.61 C1.57 53.63 2.59 37.62 3 22.62 C2.93 13.72 13.26 3.19 21.1 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-feature-tall-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 380' preserveAspectRatio='none'%3E%3Cpath d='M19.66 3 C36.53 2.76 54.58 2.45 70.28 2.29 C85.98 2.14 98.44 1.89 113.85 2.07 C129.26 2.25 146.43 3.25 162.76 3.39 C179.08 3.53 197.16 2.86 211.8 2.9 C226.45 2.93 235.8 3.61 250.63 3.6 C265.47 3.6 284.72 2.97 300.83 2.87 C316.93 2.77 331.79 2.96 347.28 3 C352.92 3.01 356.83 8.41 357 19.97 C356.57 33.22 355.65 47.51 355.7 59.72 C355.74 71.93 357.04 80.85 357.25 93.24 C357.46 105.63 356.99 120.19 356.95 134.06 C356.92 147.93 357.11 163.35 357.03 176.47 C356.94 189.6 356.62 201.06 356.44 212.81 C356.26 224.56 355.64 233.54 355.94 246.98 C356.24 260.42 357.98 280.7 358.23 293.47 C358.49 306.25 357.68 311.48 357.47 323.61 C357.26 335.73 357.16 352.03 357 366.24 C357.3 373.15 352.39 376.97 343.72 377 C327.96 377.17 312.15 377.54 296.45 377.52 C280.75 377.51 264.4 376.76 249.51 376.9 C234.63 377.04 223.16 378.51 207.16 378.36 C191.16 378.21 168.59 376.16 153.52 376 C138.45 375.84 131.83 377.2 116.74 377.39 C101.65 377.58 79.38 377.22 63 377.16 C46.62 377.09 33.31 377.05 18.46 377 C10.64 377.07 2.92 369.36 3 361.39 C3.46 348.53 4.14 335.15 4.37 322.81 C4.59 310.46 4.49 299.41 4.33 287.32 C4.17 275.23 3.62 263.65 3.41 250.25 C3.19 236.85 3.31 220.56 3.05 206.94 C2.78 193.32 1.69 181.7 1.84 168.54 C1.99 155.39 3.85 140.21 3.96 128.01 C4.06 115.81 2.4 107.63 2.47 95.33 C2.54 83.03 4.3 67.53 4.39 54.22 C4.48 40.9 3.46 28.36 3 15.43 C2.71 7.01 10.39 2.78 19.66 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-feature-tall-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 380' preserveAspectRatio='none'%3E%3Cpath d='M19.66 3 C36.53 2.76 54.58 2.45 70.28 2.29 C85.98 2.14 98.44 1.89 113.85 2.07 C129.26 2.25 146.43 3.25 162.76 3.39 C179.08 3.53 197.16 2.86 211.8 2.9 C226.45 2.93 235.8 3.61 250.63 3.6 C265.47 3.6 284.72 2.97 300.83 2.87 C316.93 2.77 331.79 2.96 347.28 3 C352.92 3.01 356.83 8.41 357 19.97 C356.57 33.22 355.65 47.51 355.7 59.72 C355.74 71.93 357.04 80.85 357.25 93.24 C357.46 105.63 356.99 120.19 356.95 134.06 C356.92 147.93 357.11 163.35 357.03 176.47 C356.94 189.6 356.62 201.06 356.44 212.81 C356.26 224.56 355.64 233.54 355.94 246.98 C356.24 260.42 357.98 280.7 358.23 293.47 C358.49 306.25 357.68 311.48 357.47 323.61 C357.26 335.73 357.16 352.03 357 366.24 C357.3 373.15 352.39 376.97 343.72 377 C327.96 377.17 312.15 377.54 296.45 377.52 C280.75 377.51 264.4 376.76 249.51 376.9 C234.63 377.04 223.16 378.51 207.16 378.36 C191.16 378.21 168.59 376.16 153.52 376 C138.45 375.84 131.83 377.2 116.74 377.39 C101.65 377.58 79.38 377.22 63 377.16 C46.62 377.09 33.31 377.05 18.46 377 C10.64 377.07 2.92 369.36 3 361.39 C3.46 348.53 4.14 335.15 4.37 322.81 C4.59 310.46 4.49 299.41 4.33 287.32 C4.17 275.23 3.62 263.65 3.41 250.25 C3.19 236.85 3.31 220.56 3.05 206.94 C2.78 193.32 1.69 181.7 1.84 168.54 C1.99 155.39 3.85 140.21 3.96 128.01 C4.06 115.81 2.4 107.63 2.47 95.33 C2.54 83.03 4.3 67.53 4.39 54.22 C4.48 40.9 3.46 28.36 3 15.43 C2.71 7.01 10.39 2.78 19.66 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.hero-media, .media-frame { --frame-fill: var(--frame-wide-5-fill); --frame-line: var(--frame-wide-5-line); }
+.screenshot { --frame-fill: var(--frame-wide-1-fill); --frame-line: var(--frame-wide-1-line); }
+.screenshot:nth-child(4n+2) { --frame-fill: var(--frame-wide-2-fill); --frame-line: var(--frame-wide-2-line); }
+.screenshot:nth-child(4n+3) { --frame-fill: var(--frame-wide-3-fill); --frame-line: var(--frame-wide-3-line); }
+.screenshot:nth-child(4n) { --frame-fill: var(--frame-wide-4-fill); --frame-line: var(--frame-wide-4-line); }
+.card { --frame-fill: var(--frame-card-1-fill); --frame-line: var(--frame-card-1-line); }
+.card:nth-child(4n+2) { --frame-fill: var(--frame-card-2-fill); --frame-line: var(--frame-card-2-line); }
+.card:nth-child(4n+3) { --frame-fill: var(--frame-card-3-fill); --frame-line: var(--frame-card-3-line); }
+.card:nth-child(4n) { --frame-fill: var(--frame-card-4-fill); --frame-line: var(--frame-card-4-line); }
+.card.feature-card { --frame-fill: var(--frame-feature-wide-fill); --frame-line: var(--frame-feature-wide-line); }
+@media (max-width: 720px) {
+	.card.feature-card { --frame-fill: var(--frame-feature-tall-fill); --frame-line: var(--frame-feature-tall-line); }
+}
+.hero-media, .media-frame { position: relative; isolation: isolate; }
+.media, .screenshot img { -webkit-mask: var(--frame-fill) center / 100% 100% no-repeat; mask: var(--frame-fill) center / 100% 100% no-repeat; }
+.card-inner { flex: 1; display: flex; flex-direction: column; background: var(--surface); -webkit-mask: var(--frame-fill) center / 100% 100% no-repeat; mask: var(--frame-fill) center / 100% 100% no-repeat; }
+.hero-media::after, .media-frame::after, .screenshot::after, .card::after {
+	content: ""; position: absolute; inset: 0; pointer-events: none; background: var(--line);
+	-webkit-mask: var(--frame-line) center / 100% 100% no-repeat; mask: var(--frame-line) center / 100% 100% no-repeat;
+}
+.hero-media::before, .media-frame::before, .card::before {
+	content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; background: var(--shadow);
+	transform: translate(6px, 6px);
+	-webkit-mask: var(--frame-fill) center / 100% 100% no-repeat; mask: var(--frame-fill) center / 100% 100% no-repeat;
+}
+.card::before { transform: translate(4px, 4px); transition: transform .12s; }
+.card:hover { box-shadow: none; }
+.card:hover::before { transform: translate(6px, 6px); }
+.card-body { position: relative; }
+.card-body::before {
+	content: ""; position: absolute; left: 0; right: 0; top: -3px; height: 6px;
+	background: var(--line); pointer-events: none;
+	-webkit-mask: var(--rule) left center / 240px 6px repeat-x; mask: var(--rule) left center / 240px 6px repeat-x;
+}
+
+/* ---------- Pen boxes: the same hand-drawn shapes for buttons, the theme and video buttons, tags and the call-to-action box ---------- */
+/* The box itself goes see-through; ::before paints its colour cut to the shape, ::after draws the line. --box-bg and --box-line set the two colours. */
+:root {
+	--frame-button-1-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 56' preserveAspectRatio='none'%3E%3Cpath d='M12.5 2.5 C26.35 2.63 39.24 2.75 54.07 2.9 C68.89 3.04 86.62 3.35 101.45 3.36 C116.28 3.38 129.86 3.12 143.04 2.98 C156.22 2.84 168.04 2.66 180.54 2.5 C191.52 2.38 197.24 9.93 197.5 18.59 C197.5 25.06 197.5 31.53 197.5 38.01 C197.36 48.07 189.74 53.8 180.98 53.5 C167.72 53.64 155.44 53.96 141.2 53.92 C126.97 53.89 110.5 53.21 95.56 53.29 C80.62 53.36 65.27 54.31 51.56 54.35 C37.86 54.38 26.07 53.78 13.33 53.5 C5.03 53.23 2.37 47.69 2.5 39.51 C2.5 32.26 2.5 25 2.5 17.75 C2.74 7.83 7.14 2.65 12.5 2.5 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-button-1-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 56' preserveAspectRatio='none'%3E%3Cpath d='M12.5 2.5 C26.35 2.63 39.24 2.75 54.07 2.9 C68.89 3.04 86.62 3.35 101.45 3.36 C116.28 3.38 129.86 3.12 143.04 2.98 C156.22 2.84 168.04 2.66 180.54 2.5 C191.52 2.38 197.24 9.93 197.5 18.59 C197.5 25.06 197.5 31.53 197.5 38.01 C197.36 48.07 189.74 53.8 180.98 53.5 C167.72 53.64 155.44 53.96 141.2 53.92 C126.97 53.89 110.5 53.21 95.56 53.29 C80.62 53.36 65.27 54.31 51.56 54.35 C37.86 54.38 26.07 53.78 13.33 53.5 C5.03 53.23 2.37 47.69 2.5 39.51 C2.5 32.26 2.5 25 2.5 17.75 C2.74 7.83 7.14 2.65 12.5 2.5 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-button-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 56' preserveAspectRatio='none'%3E%3Cpath d='M11.83 2.5 C25.25 2.76 37.61 3.25 52.08 3.28 C66.55 3.32 83.14 2.74 98.66 2.69 C114.18 2.64 130.89 3.02 145.22 2.99 C159.56 2.96 171.52 2.66 184.67 2.5 C192.79 2.45 197.43 5.93 197.5 14.74 C197.5 22.09 197.5 29.43 197.5 36.78 C197.53 46.47 194.24 53.78 182.9 53.5 C168.82 53.25 154.13 52.64 140.66 52.76 C127.19 52.88 116.75 54.15 102.07 54.24 C87.39 54.32 67.39 53.39 52.58 53.26 C37.77 53.14 26.32 53.42 13.19 53.5 C6.22 53.64 2.5 47.03 2.5 39.62 C2.5 30.63 2.5 21.64 2.5 12.64 C2.4 6.25 5.07 2.4 11.83 2.5 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-button-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 56' preserveAspectRatio='none'%3E%3Cpath d='M11.83 2.5 C25.25 2.76 37.61 3.25 52.08 3.28 C66.55 3.32 83.14 2.74 98.66 2.69 C114.18 2.64 130.89 3.02 145.22 2.99 C159.56 2.96 171.52 2.66 184.67 2.5 C192.79 2.45 197.43 5.93 197.5 14.74 C197.5 22.09 197.5 29.43 197.5 36.78 C197.53 46.47 194.24 53.78 182.9 53.5 C168.82 53.25 154.13 52.64 140.66 52.76 C127.19 52.88 116.75 54.15 102.07 54.24 C87.39 54.32 67.39 53.39 52.58 53.26 C37.77 53.14 26.32 53.42 13.19 53.5 C6.22 53.64 2.5 47.03 2.5 39.62 C2.5 30.63 2.5 21.64 2.5 12.64 C2.4 6.25 5.07 2.4 11.83 2.5 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-icon-1-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' preserveAspectRatio='none'%3E%3Cpath d='M15.72 2.5 C22.58 2.5 29.43 2.5 36.29 2.5 C42.57 2.26 45.46 5.09 45.5 15.42 C45.5 22.39 45.5 29.37 45.5 36.34 C45.61 40.94 39.14 45.66 33.57 45.5 C27.94 45.5 22.32 45.5 16.69 45.5 C8.56 45.56 2.37 42.14 2.5 35.3 C2.5 28.77 2.5 22.25 2.5 15.72 C2.73 6.4 7.14 2.48 15.72 2.5 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-icon-1-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' preserveAspectRatio='none'%3E%3Cpath d='M15.72 2.5 C22.58 2.5 29.43 2.5 36.29 2.5 C42.57 2.26 45.46 5.09 45.5 15.42 C45.5 22.39 45.5 29.37 45.5 36.34 C45.61 40.94 39.14 45.66 33.57 45.5 C27.94 45.5 22.32 45.5 16.69 45.5 C8.56 45.56 2.37 42.14 2.5 35.3 C2.5 28.77 2.5 22.25 2.5 15.72 C2.73 6.4 7.14 2.48 15.72 2.5 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-icon-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' preserveAspectRatio='none'%3E%3Cpath d='M12.69 2.5 C20.54 2.5 28.38 2.5 36.23 2.5 C40.75 2.26 45.75 7.22 45.5 11.37 C45.5 19.27 45.5 27.17 45.5 35.06 C45.69 40.77 42.26 45.53 37.36 45.5 C28.89 45.5 20.42 45.5 11.95 45.5 C7.5 45.36 2.37 40.04 2.5 32.39 C2.5 26.09 2.5 19.78 2.5 13.48 C2.34 6.09 4.68 2.88 12.69 2.5 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-icon-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 48 48' preserveAspectRatio='none'%3E%3Cpath d='M12.69 2.5 C20.54 2.5 28.38 2.5 36.23 2.5 C40.75 2.26 45.75 7.22 45.5 11.37 C45.5 19.27 45.5 27.17 45.5 35.06 C45.69 40.77 42.26 45.53 37.36 45.5 C28.89 45.5 20.42 45.5 11.95 45.5 C7.5 45.36 2.37 40.04 2.5 32.39 C2.5 26.09 2.5 19.78 2.5 13.48 C2.34 6.09 4.68 2.88 12.69 2.5 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-tag-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M11.56 2 C19.94 1.84 28.22 1.43 36.7 1.51 C45.19 1.59 54.18 2.39 62.48 2.47 C70.78 2.55 78.5 2.16 86.51 2 C94.84 2.4 97.8 7.71 98 13.48 C98 15.29 98 17.09 98 18.89 C98.14 24.57 92.48 27.76 87.27 28 C79.1 28.09 70.91 28.21 62.77 28.27 C54.63 28.32 46.5 28.38 38.4 28.33 C30.3 28.29 22.26 28.11 14.18 28 C7.2 28.12 2.17 24.96 2 20.82 C2 17.55 2 14.28 2 11.01 C2.18 6.46 4.79 2.15 11.56 2 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-tag-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M11.56 2 C19.94 1.84 28.22 1.43 36.7 1.51 C45.19 1.59 54.18 2.39 62.48 2.47 C70.78 2.55 78.5 2.16 86.51 2 C94.84 2.4 97.8 7.71 98 13.48 C98 15.29 98 17.09 98 18.89 C98.14 24.57 92.48 27.76 87.27 28 C79.1 28.09 70.91 28.21 62.77 28.27 C54.63 28.32 46.5 28.38 38.4 28.33 C30.3 28.29 22.26 28.11 14.18 28 C7.2 28.12 2.17 24.96 2 20.82 C2 17.55 2 14.28 2 11.01 C2.18 6.46 4.79 2.15 11.56 2 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-tag-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M12.77 2 C21.36 1.89 29.81 1.66 38.55 1.68 C47.29 1.7 56.51 2.07 65.2 2.12 C73.89 2.17 82.18 2.04 90.68 2 C94.6 1.82 97.9 4.99 98 13.29 C98 15.28 98 17.27 98 19.26 C97.77 24.1 95.35 28.08 87.57 28 C79.83 28.03 72.65 28.06 64.37 28.09 C56.08 28.11 46.33 28.16 37.86 28.15 C29.39 28.13 21.65 28.05 13.54 28 C7.34 28.28 1.72 25.73 2 17.59 C2 15.4 2 13.2 2 11.01 C1.82 6.23 4.49 1.64 12.77 2 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-tag-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 30' preserveAspectRatio='none'%3E%3Cpath d='M12.77 2 C21.36 1.89 29.81 1.66 38.55 1.68 C47.29 1.7 56.51 2.07 65.2 2.12 C73.89 2.17 82.18 2.04 90.68 2 C94.6 1.82 97.9 4.99 98 13.29 C98 15.28 98 17.27 98 19.26 C97.77 24.1 95.35 28.08 87.57 28 C79.83 28.03 72.65 28.06 64.37 28.09 C56.08 28.11 46.33 28.16 37.86 28.15 C29.39 28.13 21.65 28.05 13.54 28 C7.34 28.28 1.72 25.73 2 17.59 C2 15.4 2 13.2 2 11.01 C1.82 6.23 4.49 1.64 12.77 2 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-tag-short-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 62 30' preserveAspectRatio='none'%3E%3Cpath d='M13.7 2 C25.46 2 37.21 2 48.96 2 C56.82 1.84 59.7 4.47 60 8.32 C60 11.32 60 14.32 60 17.32 C59.74 21.69 56.22 27.68 50.84 28 C43.4 28.13 35.61 28.39 28.52 28.39 C21.43 28.39 15.02 28.13 8.27 28 C4.3 27.88 1.83 25.11 2 21.46 C2 18.74 2 16.03 2 13.31 C1.97 5.86 8.14 2.15 13.7 2 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-tag-short-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 62 30' preserveAspectRatio='none'%3E%3Cpath d='M13.7 2 C25.46 2 37.21 2 48.96 2 C56.82 1.84 59.7 4.47 60 8.32 C60 11.32 60 14.32 60 17.32 C59.74 21.69 56.22 27.68 50.84 28 C43.4 28.13 35.61 28.39 28.52 28.39 C21.43 28.39 15.02 28.13 8.27 28 C4.3 27.88 1.83 25.11 2 21.46 C2 18.74 2 16.03 2 13.31 C1.97 5.86 8.14 2.15 13.7 2 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-tag-short-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 62 30' preserveAspectRatio='none'%3E%3Cpath d='M10.42 2 C16.88 2.1 22.65 2.31 29.79 2.31 C36.93 2.31 45.44 2.1 53.27 2 C56.17 2.02 59.96 7.98 60 12.67 C60 14.48 60 16.29 60 18.11 C59.64 24.38 55.17 27.78 48.87 28 C36.53 28 24.19 28 11.85 28 C5.05 28.18 2.01 23.33 2 17.61 C2 14.91 2 12.21 2 9.51 C1.84 5.95 5.55 2.11 10.42 2 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-tag-short-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 62 30' preserveAspectRatio='none'%3E%3Cpath d='M10.42 2 C16.88 2.1 22.65 2.31 29.79 2.31 C36.93 2.31 45.44 2.1 53.27 2 C56.17 2.02 59.96 7.98 60 12.67 C60 14.48 60 16.29 60 18.11 C59.64 24.38 55.17 27.78 48.87 28 C36.53 28 24.19 28 11.85 28 C5.05 28.18 2.01 23.33 2 17.61 C2 14.91 2 12.21 2 9.51 C1.84 5.95 5.55 2.11 10.42 2 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-tag-long-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 30' preserveAspectRatio='none'%3E%3Cpath d='M9.14 2 C16.6 1.83 23.2 1.43 31.51 1.5 C39.82 1.58 50.43 2.42 59.01 2.43 C67.6 2.45 74.87 1.74 83.02 1.6 C91.17 1.46 99.82 1.54 107.93 1.61 C116.04 1.68 123.77 1.87 131.69 2 C135.81 1.86 138.11 6.97 138 11.7 C138 13.28 138 14.87 138 16.46 C137.65 23.4 132.35 28.16 125.91 28 C116.04 27.83 105.95 27.43 96.31 27.5 C86.68 27.57 77.87 28.33 68.1 28.4 C58.34 28.47 47 27.99 37.73 27.92 C28.46 27.85 20.89 27.97 12.47 28 C5.16 28.35 1.71 25.74 2 21.54 C2 17.97 2 14.4 2 10.84 C1.78 4.57 3.83 1.74 9.14 2 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-tag-long-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 30' preserveAspectRatio='none'%3E%3Cpath d='M9.14 2 C16.6 1.83 23.2 1.43 31.51 1.5 C39.82 1.58 50.43 2.42 59.01 2.43 C67.6 2.45 74.87 1.74 83.02 1.6 C91.17 1.46 99.82 1.54 107.93 1.61 C116.04 1.68 123.77 1.87 131.69 2 C135.81 1.86 138.11 6.97 138 11.7 C138 13.28 138 14.87 138 16.46 C137.65 23.4 132.35 28.16 125.91 28 C116.04 27.83 105.95 27.43 96.31 27.5 C86.68 27.57 77.87 28.33 68.1 28.4 C58.34 28.47 47 27.99 37.73 27.92 C28.46 27.85 20.89 27.97 12.47 28 C5.16 28.35 1.71 25.74 2 21.54 C2 17.97 2 14.4 2 10.84 C1.78 4.57 3.83 1.74 9.14 2 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-tag-long-2-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 30' preserveAspectRatio='none'%3E%3Cpath d='M9.1 2 C16.31 1.95 22.83 1.94 30.75 1.86 C38.66 1.78 48.68 1.43 56.58 1.51 C64.49 1.6 70.05 2.37 78.17 2.38 C86.28 2.38 97.03 1.61 105.26 1.55 C113.49 1.48 120.11 1.85 127.53 2 C133.51 1.72 137.92 4.51 138 11.4 C138 13.31 138 15.21 138 17.11 C137.88 25.56 134.92 28.18 128.79 28 C121.78 28.13 116.1 28.44 107.77 28.38 C99.43 28.32 87.15 27.76 78.78 27.65 C70.42 27.55 65.4 27.69 57.58 27.77 C49.76 27.86 39.72 28.13 31.87 28.16 C24.03 28.2 17.63 28.05 10.5 28 C5.9 27.88 1.74 23.04 2 16.17 C2 15.24 2 14.3 2 13.37 C1.89 8.58 3.42 2.29 9.1 2 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-tag-long-2-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 140 30' preserveAspectRatio='none'%3E%3Cpath d='M9.1 2 C16.31 1.95 22.83 1.94 30.75 1.86 C38.66 1.78 48.68 1.43 56.58 1.51 C64.49 1.6 70.05 2.37 78.17 2.38 C86.28 2.38 97.03 1.61 105.26 1.55 C113.49 1.48 120.11 1.85 127.53 2 C133.51 1.72 137.92 4.51 138 11.4 C138 13.31 138 15.21 138 17.11 C137.88 25.56 134.92 28.18 128.79 28 C121.78 28.13 116.1 28.44 107.77 28.38 C99.43 28.32 87.15 27.76 78.78 27.65 C70.42 27.55 65.4 27.69 57.58 27.77 C49.76 27.86 39.72 28.13 31.87 28.16 C24.03 28.2 17.63 28.05 10.5 28 C5.9 27.88 1.74 23.04 2 16.17 C2 15.24 2 14.3 2 13.37 C1.89 8.58 3.42 2.29 9.1 2 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-box-wide-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 880 116' preserveAspectRatio='none'%3E%3Cpath d='M16.92 3 C36.54 2.9 55.16 2.55 75.78 2.69 C96.4 2.83 120.23 3.57 140.65 3.84 C161.07 4.11 178.32 4.37 198.3 4.31 C218.28 4.26 241.57 3.89 260.52 3.52 C279.47 3.15 293.57 1.95 311.99 2.09 C330.41 2.22 351.08 3.94 371.02 4.34 C390.97 4.74 411.53 4.84 431.67 4.48 C451.81 4.11 470.63 2.36 491.85 2.16 C513.06 1.96 539.86 3.12 558.96 3.29 C578.06 3.45 587.85 3.19 606.44 3.15 C625.04 3.1 649.33 3.27 670.51 3.03 C691.68 2.79 713.93 1.81 733.5 1.71 C753.06 1.61 768.33 2.24 787.92 2.45 C807.51 2.67 830 2.82 851.04 3 C870.8 3.14 876.8 11.6 877 25.25 C877 46.4 877 67.55 877 88.7 C877.21 101.26 870.04 113.16 862.87 113 C842.3 112.75 820.71 112.16 801.15 112.24 C781.58 112.33 765.98 113.45 745.47 113.51 C724.95 113.56 697.91 112.74 678.07 112.59 C658.24 112.44 645.45 112.3 626.48 112.59 C607.51 112.88 583.96 114.47 564.25 114.34 C544.54 114.21 528.73 112.24 508.22 111.83 C487.71 111.42 463.26 111.87 441.19 111.87 C419.12 111.86 396.06 111.83 375.81 111.8 C355.55 111.77 337.86 111.66 319.66 111.69 C301.45 111.71 286.73 111.89 266.58 111.96 C246.44 112.04 219.18 112.13 198.78 112.15 C178.39 112.18 163.13 112.02 144.22 112.1 C125.3 112.19 105.81 112.5 85.28 112.65 C64.75 112.8 42.46 112.88 21.06 113 C8.38 112.85 3.35 107.73 3 91.82 C3.45 80.51 4.34 70.03 4.34 57.88 C4.34 45.72 3.45 31.87 3 18.86 C3.14 11.5 9.63 2.97 16.92 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-box-wide-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 880 116' preserveAspectRatio='none'%3E%3Cpath d='M16.92 3 C36.54 2.9 55.16 2.55 75.78 2.69 C96.4 2.83 120.23 3.57 140.65 3.84 C161.07 4.11 178.32 4.37 198.3 4.31 C218.28 4.26 241.57 3.89 260.52 3.52 C279.47 3.15 293.57 1.95 311.99 2.09 C330.41 2.22 351.08 3.94 371.02 4.34 C390.97 4.74 411.53 4.84 431.67 4.48 C451.81 4.11 470.63 2.36 491.85 2.16 C513.06 1.96 539.86 3.12 558.96 3.29 C578.06 3.45 587.85 3.19 606.44 3.15 C625.04 3.1 649.33 3.27 670.51 3.03 C691.68 2.79 713.93 1.81 733.5 1.71 C753.06 1.61 768.33 2.24 787.92 2.45 C807.51 2.67 830 2.82 851.04 3 C870.8 3.14 876.8 11.6 877 25.25 C877 46.4 877 67.55 877 88.7 C877.21 101.26 870.04 113.16 862.87 113 C842.3 112.75 820.71 112.16 801.15 112.24 C781.58 112.33 765.98 113.45 745.47 113.51 C724.95 113.56 697.91 112.74 678.07 112.59 C658.24 112.44 645.45 112.3 626.48 112.59 C607.51 112.88 583.96 114.47 564.25 114.34 C544.54 114.21 528.73 112.24 508.22 111.83 C487.71 111.42 463.26 111.87 441.19 111.87 C419.12 111.86 396.06 111.83 375.81 111.8 C355.55 111.77 337.86 111.66 319.66 111.69 C301.45 111.71 286.73 111.89 266.58 111.96 C246.44 112.04 219.18 112.13 198.78 112.15 C178.39 112.18 163.13 112.02 144.22 112.1 C125.3 112.19 105.81 112.5 85.28 112.65 C64.75 112.8 42.46 112.88 21.06 113 C8.38 112.85 3.35 107.73 3 91.82 C3.45 80.51 4.34 70.03 4.34 57.88 C4.34 45.72 3.45 31.87 3 18.86 C3.14 11.5 9.63 2.97 16.92 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+	--frame-box-tall-fill: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 230' preserveAspectRatio='none'%3E%3Cpath d='M19.89 3 C36.02 3.37 50.25 3.9 68.27 4.1 C86.29 4.3 110.25 4.53 128.02 4.18 C145.8 3.84 157.95 2.34 174.92 2.05 C191.89 1.76 211.91 2.24 229.85 2.45 C247.79 2.67 265.04 3.24 282.57 3.33 C300.09 3.42 317.53 3.11 335.01 3 C348.84 3.29 357.29 11.13 357 25.14 C357.29 38.34 357.76 49.02 357.88 64.75 C358 80.47 358.04 104.35 357.72 119.48 C357.4 134.61 356.08 141.54 355.96 155.52 C355.85 169.51 356.65 187.44 357 203.39 C356.73 215.52 351.18 226.88 338.83 227 C320.08 226.88 300.09 226.63 282.58 226.65 C265.08 226.66 250.3 226.83 233.79 227.11 C217.29 227.39 202.4 228.25 183.54 228.33 C164.67 228.4 139.73 227.67 120.62 227.56 C101.51 227.45 86.22 227.76 68.89 227.67 C51.56 227.58 34.05 227.22 16.63 227 C8.44 226.91 2.79 219.8 3 210.59 C3.1 198.04 3.17 185.07 3.31 172.94 C3.45 160.8 3.7 150.23 3.86 137.79 C4.01 125.36 4.2 111.96 4.24 98.31 C4.27 84.66 4.26 69.47 4.05 55.92 C3.85 42.36 3.35 29.97 3 17 C2.88 10.53 10.67 2.93 19.89 3 Z' fill='black'/%3E%3C/svg%3E");
+	--frame-box-tall-line: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 360 230' preserveAspectRatio='none'%3E%3Cpath d='M19.89 3 C36.02 3.37 50.25 3.9 68.27 4.1 C86.29 4.3 110.25 4.53 128.02 4.18 C145.8 3.84 157.95 2.34 174.92 2.05 C191.89 1.76 211.91 2.24 229.85 2.45 C247.79 2.67 265.04 3.24 282.57 3.33 C300.09 3.42 317.53 3.11 335.01 3 C348.84 3.29 357.29 11.13 357 25.14 C357.29 38.34 357.76 49.02 357.88 64.75 C358 80.47 358.04 104.35 357.72 119.48 C357.4 134.61 356.08 141.54 355.96 155.52 C355.85 169.51 356.65 187.44 357 203.39 C356.73 215.52 351.18 226.88 338.83 227 C320.08 226.88 300.09 226.63 282.58 226.65 C265.08 226.66 250.3 226.83 233.79 227.11 C217.29 227.39 202.4 228.25 183.54 228.33 C164.67 228.4 139.73 227.67 120.62 227.56 C101.51 227.45 86.22 227.76 68.89 227.67 C51.56 227.58 34.05 227.22 16.63 227 C8.44 226.91 2.79 219.8 3 210.59 C3.1 198.04 3.17 185.07 3.31 172.94 C3.45 160.8 3.7 150.23 3.86 137.79 C4.01 125.36 4.2 111.96 4.24 98.31 C4.27 84.66 4.26 69.47 4.05 55.92 C3.85 42.36 3.35 29.97 3 17 C2.88 10.53 10.67 2.93 19.89 3 Z' fill='none' stroke='black' stroke-width='2' stroke-linejoin='round' vector-effect='non-scaling-stroke'/%3E%3C/svg%3E");
+}
+.button, .button.plain, .theme-button, .video-toggle, .lightbox button, .cta-box, .tag, .skip-link { background: none; border-color: transparent; isolation: isolate; --box-bg: var(--surface); --box-line: var(--line); }
+.button, .theme-button, .cta-box, .tag { position: relative; }
+.button { --box-bg: var(--accent); --box-line: var(--shadow); }
+.button.plain { --box-bg: var(--surface); --box-line: var(--line); }
+.lightbox button { --box-bg: #202E37; --box-line: #557074; }
+.cta-box { --box-bg: var(--band); }
+.tag { --box-bg: var(--jam); --box-line: var(--shadow); }
+.button, .skip-link { --frame-fill: var(--frame-button-1-fill); --frame-line: var(--frame-button-1-line); }
+.button.plain { --frame-fill: var(--frame-button-2-fill); --frame-line: var(--frame-button-2-line); }
+.theme-button, .lightbox .previous { --frame-fill: var(--frame-icon-1-fill); --frame-line: var(--frame-icon-1-line); }
+.video-toggle, .lightbox .close, .lightbox .next { --frame-fill: var(--frame-icon-2-fill); --frame-line: var(--frame-icon-2-line); }
+.tag { --frame-fill: var(--frame-tag-fill); --frame-line: var(--frame-tag-line); --frame-fill-b: var(--frame-tag-2-fill); --frame-line-b: var(--frame-tag-2-line); }
+/* Labels come in three lengths, each drawn at its own size so the corners never get stretched, and every other label in a list uses a second drawing. */
+.feed-tag.news { --frame-fill: var(--frame-tag-short-fill); --frame-line: var(--frame-tag-short-line); --frame-fill-b: var(--frame-tag-short-2-fill); --frame-line-b: var(--frame-tag-short-2-line); }
+.card.feature-card .card-body .tag { --frame-fill: var(--frame-tag-long-fill); --frame-line: var(--frame-tag-long-line); --frame-fill-b: var(--frame-tag-long-2-fill); --frame-line-b: var(--frame-tag-long-2-line); }
+.card:nth-child(even) .tag, .feed-item:nth-child(even) .tag { --frame-fill: var(--frame-tag-2-fill); --frame-line: var(--frame-tag-2-line); --frame-fill-b: var(--frame-tag-fill); --frame-line-b: var(--frame-tag-line); }
+.feed-item:nth-child(even) .feed-tag.news { --frame-fill: var(--frame-tag-short-2-fill); --frame-line: var(--frame-tag-short-2-line); --frame-fill-b: var(--frame-tag-short-fill); --frame-line-b: var(--frame-tag-short-line); }
+.cta-box { --frame-fill: var(--frame-box-wide-fill); --frame-line: var(--frame-box-wide-line); }
+@media (max-width: 640px) {
+	.cta-box { --frame-fill: var(--frame-box-tall-fill); --frame-line: var(--frame-box-tall-line); }
+}
+.button::before, .theme-button::before, .video-toggle::before, .lightbox button::before, .cta-box::before, .tag::before, .skip-link::before, .button::after, .theme-button::after, .video-toggle::after, .lightbox button::after, .cta-box::after, .tag::after, .skip-link::after {
+	content: ""; position: absolute; inset: -2px; pointer-events: none;
+}
+.button::before, .theme-button::before, .video-toggle::before, .lightbox button::before, .cta-box::before, .tag::before, .skip-link::before { z-index: -1; background: var(--box-bg); -webkit-mask: var(--frame-fill) center / 100% 100% no-repeat; mask: var(--frame-fill) center / 100% 100% no-repeat; }
+.button::after, .theme-button::after, .video-toggle::after, .lightbox button::after, .cta-box::after, .tag::after, .skip-link::after { background: var(--box-line); -webkit-mask: var(--frame-line) center / 100% 100% no-repeat; mask: var(--frame-line) center / 100% 100% no-repeat; }
+/* The shadow is its own little element behind the button. On hover the button lifts and the shadow shifts back by the same amount, so it stays put. */
+.button, .button:hover { box-shadow: none; transition: transform .12s; }
+.button-shadow {
+	position: absolute; inset: -2px; z-index: -2; pointer-events: none; background: var(--shadow);
+	transform: translate(4px, 4px); transition: transform .12s;
+	-webkit-mask: var(--frame-fill) center / 100% 100% no-repeat; mask: var(--frame-fill) center / 100% 100% no-repeat;
+}
+.button:hover .button-shadow { transform: translate(6px, 6px); }
+
+/* The theme button wobbles on hover: its outline swaps between two drawings, in step with the font flip on links. */
+@keyframes icon-flip-fill {
+	0% { -webkit-mask-image: var(--frame-icon-1-fill); mask-image: var(--frame-icon-1-fill); }
+	50%, 100% { -webkit-mask-image: var(--frame-icon-2-fill); mask-image: var(--frame-icon-2-fill); }
+}
+@keyframes icon-flip-line {
+	0% { -webkit-mask-image: var(--frame-icon-1-line); mask-image: var(--frame-icon-1-line); }
+	50%, 100% { -webkit-mask-image: var(--frame-icon-2-line); mask-image: var(--frame-icon-2-line); }
+}
+.theme-button:hover::before { animation: icon-flip-fill .3s steps(1, end) infinite; }
+.theme-button:hover::after { animation: icon-flip-line .3s steps(1, end) infinite; }
+
+/* ---------- Hover wobble: clickable frames swap between two drawings while hovered, like the theme button ---------- */
+/* Only things you can click wobble (buttons, game cards, screenshots, the video's pause button), so the wobble also says "you can click this". */
+/* Each frame's second drawing (-b) is one of the other outlines of the same kind, so this adds almost nothing to the file. */
+@keyframes frame-flip-fill {
+	0% { -webkit-mask-image: var(--frame-fill); mask-image: var(--frame-fill); }
+	50%, 100% { -webkit-mask-image: var(--frame-fill-b); mask-image: var(--frame-fill-b); }
+}
+@keyframes frame-flip-line {
+	0% { -webkit-mask-image: var(--frame-line); mask-image: var(--frame-line); }
+	50%, 100% { -webkit-mask-image: var(--frame-line-b); mask-image: var(--frame-line-b); }
+}
+.button { --frame-fill-b: var(--frame-button-2-fill); --frame-line-b: var(--frame-button-2-line); }
+.button.plain { --frame-fill-b: var(--frame-button-1-fill); --frame-line-b: var(--frame-button-1-line); }
+.video-toggle { --frame-fill-b: var(--frame-icon-1-fill); --frame-line-b: var(--frame-icon-1-line); }
+.card { --frame-fill-b: var(--frame-card-2-fill); --frame-line-b: var(--frame-card-2-line); }
+.card:nth-child(4n+2) { --frame-fill-b: var(--frame-card-3-fill); --frame-line-b: var(--frame-card-3-line); }
+.card:nth-child(4n+3) { --frame-fill-b: var(--frame-card-4-fill); --frame-line-b: var(--frame-card-4-line); }
+.card:nth-child(4n) { --frame-fill-b: var(--frame-card-1-fill); --frame-line-b: var(--frame-card-1-line); }
+.card.feature-card { --frame-fill-b: var(--frame-feature-wide-2-fill); --frame-line-b: var(--frame-feature-wide-2-line); }
+@media (max-width: 720px) {
+	.card.feature-card { --frame-fill-b: var(--frame-feature-tall-2-fill); --frame-line-b: var(--frame-feature-tall-2-line); }
+}
+.screenshot { --frame-fill-b: var(--frame-wide-2-fill); --frame-line-b: var(--frame-wide-2-line); }
+.screenshot:nth-child(4n+2) { --frame-fill-b: var(--frame-wide-3-fill); --frame-line-b: var(--frame-wide-3-line); }
+.screenshot:nth-child(4n+3) { --frame-fill-b: var(--frame-wide-4-fill); --frame-line-b: var(--frame-wide-4-line); }
+.screenshot:nth-child(4n) { --frame-fill-b: var(--frame-wide-1-fill); --frame-line-b: var(--frame-wide-1-line); }
+.button:hover::before, .button:hover .button-shadow, .video-toggle:hover::before, .card:hover::before, .card:hover .card-inner, .screenshot:hover img { animation: frame-flip-fill .3s steps(1, end) infinite; }
+.button:hover::after, .video-toggle:hover::after, .card:hover::after, .screenshot:hover::after { animation: frame-flip-line .3s steps(1, end) infinite; }
+/* Labels wobble along with the card or update row they sit in. */
+.card:hover .tag::before, .feed-row:hover .tag::before { animation: frame-flip-fill .3s steps(1, end) infinite; }
+.card:hover .tag::after, .feed-row:hover .tag::after { animation: frame-flip-line .3s steps(1, end) infinite; }
+@media (prefers-reduced-motion: reduce) {
+	.button:hover::before, .button:hover::after, .button:hover .button-shadow, .video-toggle:hover::before, .video-toggle:hover::after, .card:hover::before, .card:hover::after, .card:hover .card-inner, .screenshot:hover img, .screenshot:hover::after, .card:hover .tag::before, .card:hover .tag::after, .feed-row:hover .tag::before, .feed-row:hover .tag::after { animation: none !important; }
+}
+
+/* ---------- Updates lists: rows that open and "show more" ---------- */
+.feed { display: flex; flex-direction: column; gap: 20px; }
+/* When Show more or the page buttons line the list up under the header, leave a little room above the heading. */
+.feed { scroll-margin-top: calc(var(--header-height, 72px) - 52px); }
+.feed-row { width: 100%; border: 0; background: none; font: inherit; text-align: left; cursor: pointer; }
+.feed-row:hover .bold { animation: flip-to-regular .3s steps(1, end) infinite; }
+.feed-row:hover span:not(.bold) { animation: flip-to-bold .3s steps(1, end) infinite; }
+/* A small label in front of each title saying what the row is: tan for a game, white for anything else. */
+.feed-title-line { display: flex; flex-wrap: wrap; align-items: center; gap: 4px 10px; }
+.feed-tag { --box-line: var(--line); color: var(--ink); }
+.feed-tag.game { --box-bg: var(--band); }
+.feed-tag.news { --box-bg: var(--surface); }
+/* The arrow points down on a closed row ("this opens") and up on an open one, and nudges that way on hover. */
+.feed-row .update-arrow { display: inline-block; transform: rotate(90deg); transition: transform .15s; }
+.feed-row:hover .update-arrow { transform: rotate(90deg) translateX(3px); }
+.feed-row[aria-expanded="true"] .update-arrow { transform: rotate(-90deg); }
+.feed-row[aria-expanded="true"]:hover .update-arrow { transform: rotate(-90deg) translateX(3px); }
+.feed-body { padding: 2px 10px 20px calc(9em + 30px); max-width: calc(66ch + 9em + 30px); display: flex; flex-direction: column; gap: 10px; }
+.feed-body[hidden] { display: none; }
+.feed-body p { margin: 0; }
+.feed-more { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 24px; }
+.feed-more[hidden] { display: none; }
+.feed-more button { border: 0; background: none; font-family: "Hand Bold", "Hand", system-ui, sans-serif; color: var(--ink); cursor: pointer; }
+.feed-more button:hover:not(:disabled) { color: var(--muted); animation: flip-to-regular .3s steps(1, end) infinite; }
+.feed-more button:disabled { opacity: .35; cursor: default; }
+.feed-more button:disabled::after { animation: none; }
+.feed-pager { display: inline-flex; flex-wrap: wrap; align-items: center; gap: 4px 20px; }
+.feed-pager[hidden] { display: none; }
+.feed-page { font-size: 17px; }
+.feed-count { font-size: 17px; }
+@media (max-width: 520px) {
+	.feed-body { padding-left: 4px; }
+}
+@media (prefers-reduced-motion: reduce) {
+	.feed-row:hover span, .feed-more button:hover { animation: none !important; }
+	.feed-row .update-arrow { transition: none; }
+}
+
+/* ---------- Hover font flip: links swap to the other hand font every 0.15s ---------- */
+@keyframes flip-to-regular {
+	0% { font-family: "Hand", system-ui, sans-serif; }
+	50%, 100% { font-family: "Hand Bold", "Hand", system-ui, sans-serif; }
+}
+@keyframes flip-to-bold {
+	0% { font-family: "Hand Bold", "Hand", system-ui, sans-serif; }
+	50%, 100% { font-family: "Hand", system-ui, sans-serif; }
+}
+a.bold:hover, a:hover .bold { animation: flip-to-regular .3s steps(1, end) infinite; }
+a:not(.bold):hover, a:hover span:not(.bold) { animation: flip-to-bold .3s steps(1, end) infinite; }
+
+@media (prefers-reduced-motion: reduce) {
+	a:hover, a:hover *, a:hover::after, .theme-button:hover::before, .theme-button:hover::after { animation: none !important; }
+	.button, .button-shadow, .card, .card::before, .screenshot { transition: none; }
+}
+
+/* ---------- Phones ---------- */
+@media (max-width: 520px) {
+	body { font-size: 19px; }
+	.logo { font-size: 22px; }
+	.nav { gap: 14px; }
+	.header-right { gap: 12px; }
+	.hero .wrap { padding-block: 32px 40px; }
+	.section h2 { font-size: 38px; }
+	.button { font-size: 21px; padding: 0 22px; }
+	.update-row { grid-template-columns: minmax(0, 1fr) auto; padding-inline: 4px; }
+	.update-row .update-date { grid-column: 1 / -1; }
+	.lightbox-inner { padding: 64px 8px 72px; }
+	.lightbox .previous, .lightbox .next { top: auto; bottom: 8px; transform: none; }
+}

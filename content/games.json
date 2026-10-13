@@ -1,0 +1,69 @@
+[
+	{
+		"type": "main",
+		"slug": "purrspective",
+		"title": "Purrspective",
+		"wishlistUrl": "https://store.steampowered.com/app/4005790/Purrspective/",
+		"playtestUrl": "https://store.steampowered.com/app/4005790/Purrspective/",
+		"heroLabel": "Release date TBA",
+		"tagline": "Shrink it. Grow it. Climb it. A masked cat changes the size of anything to reach the top of the city.",
+		"details": "Adventure platformer · Windows · Release date to be announced · English, Norwegian",
+		"cardText": "Adventure platformer",
+		"about": [
+			"You're a masked cat who can change the size of anything. Scale objects around you to climb buildings and reach the top of the city.",
+			"Collect powerups and become stronger to reach new heights, help the citizens of this wacky world, and see how big or small you can make the objects around you."
+		],
+		"features": [
+			"Shrink or grow the objects around you",
+			"Climb your way to the top of the city",
+			"Powerups that let you reach new heights",
+			"Citizens to meet and help",
+			"Hand-drawn characters in a full 3D world"
+		],
+		"genre": ["Adventure", "Platformer"],
+		"platforms": ["PC (Windows)"],
+		"cover": "images/purrspective-cover.webp",
+		"coverAlt": "Purrspective: the masked cat in a sunny park",
+		"gameplayLoop": {
+			"webm": "videos/purrspective-gameplay-loop.webm",
+			"mp4": "videos/purrspective-gameplay-loop.mp4",
+			"poster": "images/purrspective-gameplay-loop-poster.webp",
+			"alt": "Purrspective gameplay: the masked cat running through a hand-drawn park"
+		},
+		"trailer": {
+			"video": "videos/purrspective-trailer.mp4",
+			"poster": "images/purrspective-trailer-poster.webp"
+		},
+		"screenshots": [
+			{ "small": "images/purrspective-screenshot-1-small.webp", "full": "images/purrspective-screenshot-1.webp", "alt": "Riding a scaled-up plank across a flooded hall" },
+			{ "small": "images/purrspective-screenshot-2-small.webp", "full": "images/purrspective-screenshot-2.webp", "alt": "Breaking through a cracked tile wall" },
+			{ "small": "images/purrspective-screenshot-3-small.webp", "full": "images/purrspective-screenshot-3.webp", "alt": "Running through a stream in a sunny park" },
+			{ "small": "images/purrspective-screenshot-4-small.webp", "full": "images/purrspective-screenshot-4.webp", "alt": "Under the trees in the park" }
+		]
+	},
+	{
+		"type": "jam",
+		"title": "Escape the Dark",
+		"cardText": "Brackeys Game Jam 2026.1. Play free in your browser",
+		"url": "https://massproductionstudio.itch.io/escape-the-dark",
+		"cover": "images/escape-the-dark-cover.webp",
+		"coverAlt": "Escape the Dark: a striped planet among floating rocks in the dark"
+	},
+	{
+		"type": "jam",
+		"title": "Purrspective (jam version)",
+		"cardText": "GMTK Game Jam 2024. Play free in your browser",
+		"url": "https://massproductionstudio.itch.io/purrspective",
+		"cover": "images/purrspective-jam-cover.webp",
+		"coverAlt": "Purrspective jam version title screen in a sketched alley"
+	},
+	{
+		"type": "jam",
+		"title": "Günther",
+		"cardText": "Ludum Dare 46. Play free in your browser",
+		"url": "https://massproductionstudio.itch.io/gunther",
+		"cover": "images/gunther-cover.webp",
+		"coverAlt": "Günther: a pixel-art penguin on an ice floe above an orca",
+		"coverPosition": "center 10%"
+	}
+]
