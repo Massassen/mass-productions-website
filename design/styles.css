@@ -95,7 +95,7 @@ p { margin: 0; }
 	display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between;
 	gap: 8px 24px; padding-block: 10px;
 }
-.logo { font-size: 26px; text-decoration: none; }
+.logo { font-size: 26px; text-decoration: none; padding-block: 9px; }
 .header-right { display: flex; align-items: center; gap: 16px 20px; }
 .nav { display: flex; gap: 24px; font-size: 20px; }
 .nav a { text-decoration: none; padding-block: 10px; }
@@ -617,12 +617,22 @@ a:not(.bold):hover, a:hover span:not(.bold) { animation-play-state: running; }
 	.button, .button-shadow, .card, .card::before, .screenshot { transition: none; }
 }
 
+/* ---------- Touch screens ---------- */
+/* A phone has no mouse, and it treats the last thing you tapped as "hovered" until you tap something else.
+   Without this, a tapped update row or button would keep wobbling for as long as it stayed on screen. So on touch screens the wobbles stay still. */
+@media (hover: none) {
+	*, *::before, *::after { animation-play-state: paused !important; }
+}
+
 /* ---------- Phones ---------- */
 @media (max-width: 520px) {
 	body { font-size: 19px; }
-	.logo { font-size: 22px; }
-	.nav { gap: 14px; }
-	.header-right { gap: 12px; }
+	/* The header stays on one line: the name, the links and the theme button shrink with the screen and never wrap. */
+	.site-header .wrap { flex-wrap: nowrap; gap: 10px; }
+	.logo { font-size: clamp(16px, 4.9vw, 22px); white-space: nowrap; }
+	.nav { gap: clamp(8px, 3vw, 14px); font-size: clamp(15px, 4.4vw, 20px); white-space: nowrap; }
+	.header-right { gap: clamp(8px, 2.6vw, 12px); }
+	.theme-button { width: 40px; height: 40px; }
 	.hero .wrap { padding-block: 32px 40px; }
 	.section h2 { font-size: 38px; }
 	.button { font-size: 21px; padding: 0 22px; }
