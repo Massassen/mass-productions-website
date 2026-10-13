@@ -640,4 +640,46 @@ a:not(.bold):hover, a:hover span:not(.bold) { animation-play-state: running; }
 	.update-row .update-date { grid-column: 1 / -1; }
 	.lightbox-inner { padding: 64px 8px 72px; }
 	.lightbox .previous, .lightbox .next { top: auto; bottom: 8px; transform: none; }
+
+	/* Homepage: the title comes first, then the video, then the pitch and the buttons, all tight enough to fit on the first screen. */
+	/* The text block is opened up (display: contents) so the video can be slotted in between the title and the pitch. */
+	.hero .wrap { flex-direction: column; flex-wrap: nowrap; align-items: stretch; padding-block: 16px 26px; gap: 12px; }
+	.hero-text { display: contents; }
+	.hero-label { order: 1; }
+	.hero h1 { order: 2; }
+	.hero-media { order: 3; flex: none; margin-block: 4px; }
+	.hero-tagline { order: 4; }
+	.hero .actions { order: 5; }
+	.wishlist-note { order: 6; }
+	.hero .text-link { order: 7; }
+	.hero-tagline { font-size: 19px; }
+	.wishlist-note { font-size: 15px; }
+
+	/* The two main buttons sit side by side instead of stacked. */
+	.hero .actions, .title-row > .actions, .cta-box .actions { flex-wrap: nowrap; gap: 10px; width: 100%; }
+	.hero .actions .button, .title-row > .actions .button, .cta-box .actions .button {
+		flex: 1 1 auto; justify-content: center; min-height: 50px; padding: 0 8px;
+		font-size: clamp(14px, 4.3vw, 19px); white-space: nowrap;
+	}
+
+	/* Less empty space between sections, and things that were one per row go two per row, so pages are much shorter. */
+	.section { padding-block: 40px 12px; gap: 18px; }
+	.section:last-of-type { padding-bottom: 48px; }
+	.section h2 { font-size: 32px; }
+	.card-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+	.card-grid .card-body { padding: 10px 10px 14px; gap: 6px; }
+	.card-grid .card-title { font-size: 19px; }
+	.card-grid .card-text { font-size: 14px; }
+	.page { padding: 18px 20px 48px; gap: 24px; }
+	.page h2 { font-size: 30px; }
+	.title-row { gap: 14px; }
+	.page-details { font-size: 16px; }
+	.lead { font-size: 20px; }
+	.screenshots { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
+	.cta-box { padding: 18px; gap: 14px; }
+	.cta-box .big { font-size: 24px; }
+}
+/* On the very narrowest phones two buttons do not fit side by side, so they stack again. */
+@media (max-width: 339px) {
+	.hero .actions, .title-row > .actions, .cta-box .actions { flex-wrap: wrap; }
 }
