@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+# Keep script line endings right for their OS, whichever OS checks the repo out.
+*.sh text eol=lf
+*.bat text eol=crlf
